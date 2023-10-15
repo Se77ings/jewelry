@@ -20,6 +20,9 @@ if (!isset($_SESSION['login'])) {
         a:hover {
             cursor: pointer;
         }
+        .navbar-collapse{
+            background-color: white;
+        } 
     </style>
 </head>
 
@@ -36,9 +39,9 @@ if (!isset($_SESSION['login'])) {
                     onclick="exibeContent(this)">Carteira</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="4"
                     onclick="exibeContent(this)">Débitos</a>
-                <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3" id="5"
-                    onclick="exibeContent(this)">Btn5</a>
-                <a class="list-group-item list-group-item-action list-group-item-light p-3" id="6"
+                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="5"
+                    onclick="exibeContent(this)">Manutenção</a>
+                <!--<a class="list-group-item list-group-item-action list-group-item-light p-3" id="6"
                     onclick="exibeContent(this)">Btn6</a> -->
             </div>
         </div>
@@ -68,7 +71,7 @@ if (!isset($_SESSION['login'])) {
                     </div>
                 </div>
             </nav>
-            <iframe src="" id="frame" frameborder="0"></iframe>
+            <iframe src="" id="frame" width="100%" height="90%" frameborder="0"></iframe>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -79,13 +82,13 @@ if (!isset($_SESSION['login'])) {
             var frame = document.getElementById('frame');
             switch (opt.id) {
                 case '1':
-                    frame.src = "teste.html";
+                    frame.src = "NovaVenda/index.php";
                     break;
                 case '2':
-                    frame.src = "teste.html";
+                    frame.src = "ConsultaVendas/index.php";
                     break;
                 case '3':
-                    frame.src = "teste.html";
+                    frame.src = "Carteira/index.php";
                     break;
                 case '4':
                     frame.src = "teste.html";
