@@ -63,10 +63,8 @@
 
 <body>
     <div class="container container-fluid border rounded-2" style="margin:auto;">
-
-
         <h4>Registrar Nova venda</h4>
-        <form action="../../model/vendas/recebePedido.php" method="post" class="form form-flex " id="formulario">
+        <form action="../../controller/vendas/recebePedido.php" method="post" class="form form-flex " id="formulario">
             <div class="row" style="display: flex;">
                 <h5>Dados do Produto:</h5>
                 <hr>
@@ -116,7 +114,7 @@
                     <label for="condiçãoPagamento">&nbsp;</label>
                     <select name="condiçãoPagamento" id="condiçãoPagamento" class="form-select"
                         onchange="calculaParcelas(this)">
-                        <option value="" selected hidden>Escolha Abaixo:</option>
+                        <option value="" selected hidden>Escolha o tipo de pagamento:</option>
                         <option value="1">À Vista</option>
                         <option value="2">Próximo Mês</option>
                         <option value="3">À Prazo - 2x</option>
@@ -129,7 +127,7 @@
             <div class="row">
                 <div clas="col">
                     <div class="" style="text-align:center;">
-                        <button id="next" class="btn btn-primary">Registrar Venda</button>
+                        <button id="next" type="submit" class="btn btn-primary">Registrar Venda</button>
                     </div>
                 </div>
             </div>
@@ -137,19 +135,20 @@
     </form>
 
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        function calculaParcelas(element)  {
+        function calculaParcelas(element) {
             console.log(element.value);
             const valores = document.getElementById("valores");
             valores.innerHTML = "";
-            i f (element.value ==  1) {
+            if(element.value == 1) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value} - PAGO</p>`;
-             } els e if (element.value  == 2) {
+            } else if (element.value == 2) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>`;
-             }  else if (element.val ue == 3) {
+            } else if (element.value == 3) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
-                <p>2 Parcelas de : R$ ${document.getElementById("valo r ").value / 2}</p>`;
+                <p>2 Parcelas de : R$ ${document.getElementById("valor").value / 2}</p>`;
             }
         }
 
@@ -175,7 +174,7 @@
                 const termo = inputNome.value;
 
                 if (termo.length >= 2) {
-                    fetch(`../../model/pessoas/buscar_nomes.php?termo=${termo}%`)
+                    fetch(`../../controller/pessoas/buscar_nomes.php?termo=${termo}%`)
                         .then((response) => response.json())
                         .then((data) => {
                             sugestoes.innerHTML = "";
@@ -231,7 +230,7 @@
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             var xhr = new XMLHttpRequest();
-                                            xhr.open("POST", "../../model/pessoas/cadastrar_pessoa.php", true);
+                                            xhr.open("POST", "../../controller/pessoas/cadastrar_pessoa.php", true);
                                             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                             xhr.send(`nome=${result.value.nome}&telefone=${result.value.telefone}`);
                                             xhr.onreadystatechange = function () {
@@ -273,7 +272,7 @@
                     nextButton.disabled = true;
                 }
             });
-    });
+        });
 
     </script>
 </body>

@@ -38,7 +38,7 @@ if (!isset($_SESSION['login'])) {
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="3"
                     onclick="exibeContent(this)">Carteira</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="4"
-                    onclick="exibeContent(this)">Débitos</a>
+                    onclick="exibeContent(this)">Títulos > Direito</a>
                  <a class="list-group-item list-group-item-action list-group-item-light p-3" id="5"
                     onclick="exibeContent(this)">Manutenção</a>
                 <!--<a class="list-group-item list-group-item-action list-group-item-light p-3" id="6"
@@ -91,7 +91,7 @@ if (!isset($_SESSION['login'])) {
                     frame.src = "Carteira/index.php";
                     break;
                 case '4':
-                    frame.src = "teste.html";
+                    frame.src = "Titulos/Direito/index.php";
                     break;
                 case '5':
                     frame.src = "teste.html";

@@ -1,6 +1,6 @@
 <?php
-require_once('../conexao.php');
-var_dump($_POST);
+require_once('../../model/conexao.php');
+// var_dump($_POST);
 // array(4) { ["id_produto"]=> string(1) "1" ["valor"]=> string(2) "25" ["nome"]=> string(13) "Gabriel Lucas" ["telefone"]=> string(11) "17992304335" }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -59,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dataVencimento2 = date('Y-m-d', strtotime($dataVencimento1 . ' + 30 days'));
             }
     if ($condiçãoPagamento == 1 || $condiçãoPagamento == 2) {
-        $sql = "INSERT INTO titulos (ID, valor, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
+        $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
         $result = $conexao->query($sql);
     } else
         if ($condiçãoPagamento == 3) {
-            $sql = "INSERT INTO titulos (ID, valor, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento1', '$id_pedido', '$pago')";
+            $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento1', '$id_pedido', '$pago')";
             $result = $conexao->query($sql);
-            $sql = "INSERT INTO titulos (ID, valor, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
+            $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
             $result = $conexao->query($sql);
 
         }

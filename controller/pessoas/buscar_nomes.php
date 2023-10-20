@@ -1,5 +1,5 @@
 <?php
-require_once "../conexao.php"; // Inclua o arquivo de conexão PDO
+require_once "../../model/conexao.php"; // Inclua o arquivo de conexão PDO
 header("Content-Type: application/json");
 
 $termo = $_GET["termo"];
