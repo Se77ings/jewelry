@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/lib/css/bootstrap.min.css">
     <title>Consulta Vendas:</title>
+
     <style>
         .card {
             margin-top: 20px;
@@ -20,8 +21,8 @@
 
 <body>
     <div class="container container-fluid">
-        <h4>Consultar Vendas:</h4>
-        <h5>Exibindo da mais antiga para a mais recente</h5>
+        <h4>Consultando Pedidos:</h4>
+        <h5>Exibindo do mais antigo para o mais recente</h5>
         <table class="table table-hover">
             <tr>
                 <th>Data da Venda:</th>
@@ -32,9 +33,12 @@
             <tbody>
                 <?php
                 require_once("../../model/conexao.php");
-
+                require_once("../assets/global_functions/dateAndNumberFormatting.php");
+        
                 // Retrieve data from the sales table
-                $sql = "SELECT * FROM pedidos ORDER BY data ASC";
+                $sql = "SELECT p.ID, p.data, p.valor, p.id_produto, prs.nome as 'cliente' FROM pedidos p
+                        LEFT JOIN pessoas prs on prs.ID = p.id_cliente
+                        ORDER BY data ASC";
                 $result = $conexao->query($sql);
 
                 // Verifique se a consulta foi bem-sucedida
@@ -44,9 +48,9 @@
                     if ($totalRows > 0) {
                         while ($row = $result->fetch()) {
                             echo "<tr id='". $row["ID"] ."'>";
-                            echo "<td>" . $row["data"] . "</td>";
-                            echo "<td>" . $row["valor"] . "</td>";
-                            echo "<td> Por enquanto nenhum</td>";
+                            echo "<td>" . YYYYMMDDtoDDMMYYYY($row["data"], '/') . "</td>";
+                            echo "<td>". convertePonto( $row["valor"] ) ."</td>";
+                            echo "<td>" . $row["cliente"] ."</td>";
                             echo "<td>" . $row["id_produto"] . "</td>";
                             echo "</tr>";
                         }
