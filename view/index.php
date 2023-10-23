@@ -15,7 +15,7 @@ if (!isset($_SESSION['login'])) {
     <meta name="author" content="" />
     <title>Página Inicial</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link href="lib/css/styles.css" rel="stylesheet" />
+    <link href="assets/lib/css/styles.css" rel="stylesheet" />
     <style>
         a:hover {
             cursor: pointer;
@@ -75,7 +75,7 @@ if (!isset($_SESSION['login'])) {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="assets/js/scripts.js"></script>
     <script>
         function exibeContent(opt) {
             gerenciaSelected();

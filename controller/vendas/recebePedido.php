@@ -4,6 +4,7 @@ require_once('../../model/conexao.php');
 // array(4) { ["id_produto"]=> string(1) "1" ["valor"]=> string(2) "25" ["nome"]=> string(13) "Gabriel Lucas" ["telefone"]=> string(11) "17992304335" }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // var_dump($_POST);
     //Inserindo o Pedido
     $id_produto = $_POST['id_produto'];
     $valor = $_POST['valor'];
@@ -58,7 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dataVencimento1 = date('Y-m-d', strtotime($dataVenda . ' + 30 days'));
                 $dataVencimento2 = date('Y-m-d', strtotime($dataVencimento1 . ' + 30 days'));
             }
-    if ($condiçãoPagamento == 1 || $condiçãoPagamento == 2) {
+    if($condiçãoPagamento == 1){
+        $sql = "INSERT INTO titulos (ID, valor_venda, valor_pago,data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
+        $result = $conexao->query($sql);
+    }
+    else
+    if ($condiçãoPagamento == 2) {
         $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
         $result = $conexao->query($sql);
     } else

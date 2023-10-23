@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../assets/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title>Títulos de Direito</title>
     <style>
@@ -35,6 +35,8 @@
                     <tr>
                         <?php
                         require_once('../../../model/conexao.php');
+                        require_once("../../assets/global_functions/dateAndNumberFormatting.php");
+
                         $sql = "SELECT t.valor_pago, t.valor_venda, t.pedido_referencia, prs.nome as 'IDPessoa', p.data as 'dataP', t.ID as 'IDTitulo'  FROM titulos t
                         LEFT JOIN pedidos p on t.pedido_referencia = p.ID
                         LEFT JOIN pessoas prs on p.id_cliente = prs.ID
@@ -47,10 +49,10 @@
                                 $valor_venda = $row['valor_venda'];
                                 echo "<tr id='" . $row['IDTitulo'] . "'>";
                                 echo "<td>" . $row['pedido_referencia'] . "</td>";
-                                echo "<td>" . $row['dataP'] . "</td>";
                                 echo "<td> " . $row['IDPessoa'] . " </td>";
-                                echo "<td id='valor_venda'>" . $row['valor_venda'] . "</td>";
-                                echo "<td>" . ($valor_venda - $valor_pago) . "</td>";
+                                echo "<td>" . YYYYMMDDtoDDMMYYYY($row['dataP'], '/') . "</td>";
+                                echo "<td id='valor_venda'>" . convertePonto($row['valor_venda']) . "</td>";
+                                echo "<td>" . convertePonto($valor_venda - $valor_pago) . "</td>";
                                 echo "<td><button class='btn btn-success' onclick='quitacao(this.parentElement.parentElement)'>Quitar</button></td>";
                                 echo "</tr>";
                             }
@@ -118,8 +120,8 @@
                                     title: 'Quitado!',
                                     text: 'O título foi parcialmente quitado.',
                                     icon: 'info',
-                            showCancelButton: false,
-                            confirmButtonText: 'OK!',
+                                    showCancelButton: false,
+                                    confirmButtonText: 'OK!',
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         window.location.reload();
