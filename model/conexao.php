@@ -1,7 +1,7 @@
 <?php
-    $banco = 'jewelry';
-    $user = 'jewelry';
-    $pass = 'MJWP2RmRxnx2ay4D';
+    $banco = 'jewelry_db';
+    $user = 'root';
+    $pass = '';
 
     $conexao = new
     PDO("mysql:host=localhost;dbname=$banco", $user, $pass);
