@@ -10,7 +10,7 @@ function DatetimeYYYYMMDDtoDDMMYYYY($datetime, $separator = "/") {
     $datePart = YYYYMMDDtoDDMMYYYY($dateParts[0], $separator);
 
     if (count($dateParts) > 1) {
-        return $datePart . " às " . $dateParts[1];
+        return $datePart;
     } else {
         return $datePart;
     }
