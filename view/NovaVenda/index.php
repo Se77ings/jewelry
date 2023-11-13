@@ -5,164 +5,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
     <title>Registrar Nova Venda</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,400;0,500;1,300;1,700&display=swap"
+        rel="stylesheet">
     <style>
-        #valor {
-            width: 164px;
-        }
-
-        .col {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* width: 80%; */
-        }
-
-        .row {
-            /* width: 80%; */
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-            margin: 20px;
-        }
-
-        .input-group {
-            width: 100%;
-        }
-
-        .exibir-em-celular {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .exibir-em-celular .col {
-            display: contents;
-        }
-
-        form {
-            width: 100%;
-        }
-
+       
         #sugestoes {
-            background-color: #fff;
             border: 1px solid black;
             border-radius: 5px;
         }
 
-        .item {
-            padding: 8px;
-            cursor: pointer;
+        #valores {
+            margin-top: 8px;
+            width: fit-content;
+            border: none;
+            border-radius: 20px;
+            padding: 5px;
+            background-color: white;
+            border: solid 1px black;
         }
 
-        .item:hover {
-            background-color: #f0f0f0;
+        #valores p{
+            margin: 0px;
+            padding: 0px;
+            font-size: 16px;
+        }
+
+        @media screen and (max-width:500px) {
+            #valor {
+                width: 95px;
+            }
+        }
+
+        @media screen and (min-width:700px) {
+            #valor {
+                width: 124px;
+            }
+
+            #pai {
+                width: 170px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container container-fluid border rounded-2" style="margin:auto;">
-        <h4>Registrar Nova venda</h4>
+    <main class="container container-fluid" style="margin:auto;">
+        <h3>Registrar Nova venda</h3>
         <form action="../../controller/vendas/recebePedido.php" method="post" class="form form-flex " id="formulario">
             <div class="row" style="display: flex;">
                 <h5>Dados do Produto:</h5>
                 <hr>
                 <div class="col">
                     <div class="form-flex">
-                        <label for="id_produto" class="form-label">ID do Produto:</label>
+                        <label for="id_produto">ID:</label>
                         <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-flex">
-                        <label class="form-label" for="valor">Valor:</label><br>
-                        <div class="input-group form-flex">
+                        <label for="valor">Valor:</label>
+                        <div class="input-group form-flex" style="flex-direction:row" id="pai">
                             <span class="input-group-text">R$</span>
                             <input type="text" name="valor" id="valor" class="form-control">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row" style="display: flex;">
+            <div class="row" style="display: flex; flex-direction: column">
                 <h5>Dados do cliente:</h5>
                 <hr>
                 <div class="col">
                     <div class="form-flex">
-                        <label class="form-label" for="nome">Nome:</label>
+                        <label for="nome">Nome:</label>
                         <input class="form-control" type="text" name="nome" id="nome" autocomplete="off">
                         <div id="sugestoes" class="sugestoes" style="display:none"></div>
-                        <!-- Container para sugestões -->
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-flex">
-                        <label class="form-label" for="telefone">Telefone:</label>
+                        <label for="telefone">Telefone:</label>
                         <input class="form-control" type="text" name="telefone" id="telefone">
                     </div>
                 </div>
             </div>
 
-            <div class="row" style="display: flex;">
+            <div class="row" style="display: flex; flex-direction: column;">
                 <h5>Condição de Pagamento:</h5>
                 <hr>
-                <div class="form-flex mb-3">
-                    <label for="dataVenda">Data da Venda:</label>
-                    <input type="date" id="dataVenda" name="dataVenda">
+                <div class="form-flex mb-3 col" style="flex-direction: column;">
+                    <div class="form-flex">
+                        <label for="dataVenda" style="text-align:left;">Data da Venda:</label>
+                        <input type="date" id="dataVenda"
+                            style="width:282px; padding: 0.375rem 0.75rem; border-radius:8px; border: solid 1px gainsboro;" name="dataVenda">
+                    </div>
                 </div>
                 <div class="col">
                     <label for="condiçãoPagamento">&nbsp;</label>
                     <select name="condiçãoPagamento" id="condiçãoPagamento" class="form-select"
+                        style="width: 280px; padding: 0.375rem 0.75rem; border-radius:8px; margin-left:0px;"
                         onchange="calculaParcelas(this)">
                         <option value="" selected hidden>Escolha o tipo de pagamento:</option>
                         <option value="1">À Vista</option>
                         <option value="2">Próximo Mês</option>
                         <option value="3">À Prazo - 2x</option>
+                        <option value="4">1 + 2 Parcelas</option>
                     </select>
                 </div>
                 <div class="col">
-                    <div class="container border" id="valores"></div>
+                    <div class="container" id="valores"></div>
                 </div>
             </div>
-            <div class="row">
-                <div clas="col">
-                    <div class="" style="text-align:center;">
-                        <button id="next" type="submit" class="btn btn-primary">Registrar Venda</button>
-                    </div>
-                </div>
+            <div class="" style="text-align:center;">
+                <button id="next" type="submit" class="btn btn-success">Registrar Venda</button>
             </div>
-    </div>
+    </main>
     </form>
 
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function calculaParcelas(element) {
             console.log(element.value);
             const valores = document.getElementById("valores");
             valores.innerHTML = "";
-            if(element.value == 1) {
+            if (element.value == 1) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value} - PAGO</p>`;
             } else if (element.value == 2) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>`;
             } else if (element.value == 3) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
                 <p>2 Parcelas de : R$ ${document.getElementById("valor").value / 2}</p>`;
+            }else if(element.value == 4){
+                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
+                <p>3 Parcelas de : R$ ${document.getElementById("valor").value / 3}</p>`;
             }
         }
 
-        ajustarExibicao();
-        window.addEventListener('resize', ajustarExibicao);
-        function ajustarExibicao() {
-            var formulario = document.getElementById('formulario');
-
-            if (window.innerWidth <= 768) { // Largura de 768px ou menos é geralmente considerada como um dispositivo móvel
-                formulario.classList.add('exibir-em-celular');
-            } else {
-                formulario.classList.remove('exibir-em-celular');
-            }
-        }
 
         document.addEventListener("DOMContentLoaded", function () {
             const inputNome = document.getElementById("nome");

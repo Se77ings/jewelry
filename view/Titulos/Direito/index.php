@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
+
     <title>Títulos de Direito</title>
     <style>
         .bold {
@@ -16,10 +18,16 @@
 
 <body>
     <div class="container container-fluid mt-4">
-        <h4>Filtros:</h4>
-        <p>Placeholder</p>
-        <p>Placeholder</p>
-        <div id="contents" class="container container-fluid">
+        <div class="border rounded p-3">
+            <h4>Filtros:</h4>
+            <p>Placeholder</p>
+            <p>Placeholder</p>
+        </div>
+        <div class="border rounded p-3 my-4">
+            <h3>Data de quitação:</h3>
+            <input type="date" id="dataQuitacao">
+        </div>
+        <div id="contents" class="container container-fluid border rounded p-3">
             <table class="table table-hover">
                 <thead class="table-dark">
                     <tr>
@@ -40,7 +48,9 @@
                         $sql = "SELECT t.valor_pago, t.valor_venda, t.pedido_referencia, prs.nome as 'IDPessoa', p.data as 'dataP', t.ID as 'IDTitulo'  FROM titulos t
                         LEFT JOIN pedidos p on t.pedido_referencia = p.ID
                         LEFT JOIN pessoas prs on p.id_cliente = prs.ID
+                        WHERE pago = 0
                         ORDER BY (valor_venda - valor_pago) DESC";
+
                         $result = $conexao->query($sql);
                         if ($result) {
                             while ($row = $result->fetch()) {
@@ -56,6 +66,8 @@
                                 echo "<td><button class='btn btn-success' onclick='quitacao(this.parentElement.parentElement)'>Quitar</button></td>";
                                 echo "</tr>";
                             }
+                        } else {
+                            echo "0 results";
                         }
 
                         ?>
@@ -67,18 +79,39 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        var dataQuitacaoInput = document.getElementById("dataQuitacao");
+
+        // Cria um objeto Date para a data atual
+        var dataAtual = new Date();
+
+        // Obtém o ano, mês e dia da data atual
+        var ano = dataAtual.getFullYear();
+        var mes = (dataAtual.getMonth() + 1).toString().padStart(2, "0"); // O mês começa de 0
+        var dia = dataAtual.getDate().toString().padStart(2, "0");
+
+        // Formata a data no formato "YYYY-MM-DD"
+        var dataFormatada = `${ano}-${mes}-${dia}`;
+
+        dataQuitacaoInput.value = dataFormatada;
+
         function connection(data) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../../../controller/titulos/titulo_controller.php", true);
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                if (xhr.responseText == "OK") {
-                    window.location.reload();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Lógica a ser executada quando a solicitação estiver completa
+                    console.log("entra aqui???");
+                    console.log(xhr.responseText);
                 }
-            }
-            xhr.send(data)
+            };
+
+            xhr.send(data);
         }
+
         function quitacao(elemento) {
+            var dataQuitacao = document.getElementById("dataQuitacao").value;
             var IDTitulo = elemento.id;
             var valor = elemento.children[4].innerHTML;
             console.log(valor, IDTitulo);
@@ -115,7 +148,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 //chamar função quitar, parcialmente.
-                                connection(`IDTitulo=${IDTitulo}&valor_quitado=${valorDigitado}`)
+                                connection(`IDTitulo=${IDTitulo}&valor_quitado=${valorDigitado}&dataQuitacao=${dataQuitacao}&quitado=0`)
                                 Swal.fire({
                                     title: 'Quitado!',
                                     text: 'O título foi parcialmente quitado.',
@@ -135,7 +168,7 @@
                         })
                     }
                     else {
-                        connection(`IDTitulo=${IDTitulo}&valor_quitado=${valorDigitado}`)
+                        connection(`IDTitulo=${IDTitulo}&valor_quitado=${valorDigitado}&dataQuitacao=${dataQuitacao}&quitado=1`)
                         //chamar função quitar, completamente
                         Swal.fire({
                             title: 'Quitado!',

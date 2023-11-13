@@ -23,13 +23,19 @@ if (!isset($_SESSION['login'])) {
         .navbar-collapse{
             background-color: white;
         } 
+        .sidebar-heading{
+            background-color: #00ac3b;
+        }
+        #sidebar-wrapper{
+            border-right: solid 1px #00ac3b;
+        }
     </style>
 </head>
 
 <body>
     <div class="d-flex" id="wrapper">
-        <div class="border-end bg-white" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom bg-light" style="height: 58px;">Jewelry System</div>
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading" style="height: 58px; color:white">Jewelry System</div>
             <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="1"
                     onclick="exibeContent(this)">Registrar Nova venda</a>
@@ -46,9 +52,9 @@ if (!isset($_SESSION['login'])) {
             </div>
         </div>
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="height: 58px;">
+            <nav class="navbar navbar-expand-lg navbar-light sidebar-heading" style="height: 58px;">
                 <div class="container-fluid">
-                    <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+                    <button class="btn btn-success" id="sidebarToggle">Alternar</button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation"><span
@@ -77,6 +83,7 @@ if (!isset($_SESSION['login'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     <script>
+    exibeContent(document.getElementById("3"));
         function exibeContent(opt) {
             gerenciaSelected();
             var frame = document.getElementById('frame');
