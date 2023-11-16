@@ -133,11 +133,21 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.addEventListener('resize', function () {
-            Swal.update({
-                heightAuto: false, // Desativar a altura automática para que você possa definir manualmente
-                height: window.innerHeight, // Configurar a altura com a altura da janela
-            });
+            const popup = Swal.getPopup();
+            const isOpen = Swal.isVisible();
+
+            if (isOpen) {
+                const windowHeight = window.innerHeight;
+                const popupHeight = popup.offsetHeight;
+
+                // Calcule a altura máxima do popup
+                const maxHeight = Math.min(windowHeight - 20, popupHeight);
+
+                // Ajuste a altura do popup
+                popup.style.maxHeight = maxHeight + 'px';
+            }
         });
+
         function calculaParcelas(element) {
             console.log(element.value);
             const valores = document.getElementById("valores");
@@ -173,8 +183,9 @@
                         <p>Entrada: R$ ${result.value.valor}</p>
                         <p>2 Parcelas de : R$ ${(document.getElementById("valor").value - result.value.valor) / 2}</p>`;
                     }
-                
-            })}
+
+                })
+            }
         }
 
 
@@ -229,9 +240,10 @@
                                     Swal.fire({
                                         title: 'Cadastre o usuário abaixo:',
                                         margin: 'auto',
-                                        icon: 'info',
+                                        // icon: 'info',
                                         html: '<input id="swal-input1" class="swal2-input" style="margin:5px 0px" placeholder="Nome">' +
                                             '<input id="swal-input3" class="swal2-input" style="margin:5px 0px" placeholder="Telefone">',
+                                        scrollbarPadding: false,
                                         focusConfirm: false,
                                         preConfirm: () => {
                                             const nome = Swal.getPopup().querySelector('#swal-input1').value
