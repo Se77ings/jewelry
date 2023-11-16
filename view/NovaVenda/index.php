@@ -63,7 +63,7 @@
                 <div class="col">
                     <div class="form-flex">
                         <label for="id_produto">ID:</label>
-                        <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto">
+                        <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto" required>
                     </div>
                 </div>
                 <div class="col">
@@ -71,7 +71,7 @@
                         <label for="valor">Valor:</label>
                         <div class="input-group form-flex" style="flex-direction:row" id="pai">
                             <span class="input-group-text">R$</span>
-                            <input type="text" name="valor" id="valor" class="form-control">
+                            <input type="text" name="valor" id="valor" class="form-control" required>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                 <hr>
                 <div class="col">
                     <div class="form-flex">
-                        <label for="nome">Nome:</label>
+                        <label for="nome" required>Nome:</label>
                         <input class="form-control" type="text" name="nome" id="nome" autocomplete="off">
                         <div id="sugestoes" class="sugestoes" style="display:none"></div>
                     </div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="" style="text-align:center;">
-                <button id="next" type="submit" class="btn btn-success">Registrar Venda</button>
+                <button id="next" type="submit" class="btn btn-success" disabled>Registrar Venda</button>
             </div>
             <input type="text" name="entrada" value="" id="entrada" style="display:none;">
     </main>
@@ -166,7 +166,8 @@
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
-                    showCancelButton: true,
+                    showCancelButton: false,
+                    allowOutsideClick: false,
                     confirmButtonText: 'Ok',
                     showLoaderOnConfirm: true,
                     preConfirm: (valor) => {
@@ -185,6 +186,10 @@
                     }
 
                 })
+            }
+
+            if (valores.innerHTML != "") {
+                document.getElementById("next").disabled = false;
             }
         }
 
