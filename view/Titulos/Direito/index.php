@@ -6,23 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
+    <link rel="stylesheet" href="../../assets/lib/css/personalStyle.css">
 
     <title>Títulos de Direito</title>
     <style>
         .bold {
             font-weight: bold;
         }
+
+        td p {
+            margin: 0;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: bottom;
+        }
+
+        .pDatas {
+            font-size: 12px;
+            text-align: LEFT;
+        }
+
+        /* Adicione estilos adicionais conforme necessário */
+        .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .card-body {
+            padding: 0px;
+            width: 100px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container container-fluid mt-4">
-        <div class="border rounded p-3">
+        <!--futuramente... 
+            <div class="border rounded p-3">
             <h4>Filtros:</h4>
             <p>Placeholder</p>
-            <p>Placeholder</p>
-        </div>
+        </div> -->
         <div class="border rounded p-3 my-4">
             <h3>Data de quitação:</h3>
             <input type="date" id="dataQuitacao">
@@ -31,12 +58,10 @@
             <table class="table table-hover">
                 <thead class="table-dark">
                     <tr>
-                        <th class="col">ID Venda</th>
-                        <th class="col">Nome Cliente</th>
-                        <th class="col">Data Venda</th>
-                        <th class="col">Valor Venda</th>
-                        <th class="col">Valor em Aberto</th>
-                        <th class="col">Opção</th>
+                        <th>Cliente</th>
+                        <th>Valor </th>
+                        <th>Saldo</th>
+                        <th>Opção</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,11 +70,11 @@
                         require_once('../../../model/conexao.php');
                         require_once("../../assets/global_functions/dateAndNumberFormatting.php");
 
-                        $sql = "SELECT t.valor_pago, t.valor_venda, t.pedido_referencia, prs.nome as 'IDPessoa', p.data as 'dataP', t.ID as 'IDTitulo'  FROM titulos t
+                        $sql = "SELECT t.valor_pago, t.valor_venda, t.pedido_referencia, prs.nome as 'IDPessoa', t.data_vencimento as 'dataP', t.ID as 'IDTitulo'  FROM titulos t
                         LEFT JOIN pedidos p on t.pedido_referencia = p.ID
                         LEFT JOIN pessoas prs on p.id_cliente = prs.ID
                         WHERE pago = 0
-                        ORDER BY (valor_venda - valor_pago) DESC";
+                        ORDER BY t.data_vencimento ASC";
 
                         $result = $conexao->query($sql);
                         if ($result) {
@@ -57,13 +82,17 @@
 
                                 $valor_pago = $row['valor_pago'];
                                 $valor_venda = $row['valor_venda'];
+
                                 echo "<tr id='" . $row['IDTitulo'] . "'>";
-                                echo "<td>" . $row['pedido_referencia'] . "</td>";
-                                echo "<td> " . $row['IDPessoa'] . " </td>";
-                                echo "<td>" . YYYYMMDDtoDDMMYYYY($row['dataP'], '/') . "</td>";
-                                echo "<td id='valor_venda'>" . convertePonto($row['valor_venda']) . "</td>";
+                                echo "<td>";
+                                echo "<div class='card-body'>";
+                                echo "<p class='pDatas'>" . YYYYMMDDtoDDMMYYYY($row['dataP'], '/') . "</p>";
+                                echo "<p>" . $row['IDPessoa'] . "</p>";
+                                echo "</td>";
+                                echo "<td>" . convertePonto($row['valor_venda']) . "</td>";
                                 echo "<td>" . convertePonto($valor_venda - $valor_pago) . "</td>";
                                 echo "<td><button class='btn btn-success' onclick='quitacao(this.parentElement.parentElement)'>Quitar</button></td>";
+                                echo "</div>";
                                 echo "</tr>";
                             }
                         } else {
@@ -110,16 +139,19 @@
             xhr.send(data);
         }
 
+
+
         function quitacao(elemento) {
             var dataQuitacao = document.getElementById("dataQuitacao").value;
             var IDTitulo = elemento.id;
-            var valor = elemento.children[4].innerHTML;
+            var valor = elemento.children[2].innerHTML;
+            console.log(elemento)
             console.log(valor, IDTitulo);
 
 
             Swal.fire({
                 title: 'Confirme o Valor:',
-                html: `<label>R$: &nbsp;</label><input id="valorDigitado" type="number" value=${valor}>`,
+                html: `<label>R$: &nbsp;</label><input id="valorDigitado" type="number" value=${parseFloat(valor)}>`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Confirmo',

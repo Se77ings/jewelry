@@ -11,6 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $_POST['nome'];
     $dataVenda = $_POST['dataVenda'];
     $condiçãoPagamento = $_POST['condiçãoPagamento'];
+    if (isset($_POST['entrada'])) {
+        $entrada = $_POST['entrada'];
+    }
 
 
     $sqlIDCliente = "SELECT id FROM pessoas WHERE nome = :nome";
@@ -55,25 +58,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($condiçãoPagamento == 2) {
             $dataVencimento = date('Y-m-d', strtotime($dataVenda . ' + 30 days')); // deixei 30 dias por padrao
         } else
-            if ($condiçãoPagamento == 3) { //preciso gerar 2 titulos aqui, pois a condição 3 é 2 parcelas 30 dias cada
+            if ($condiçãoPagamento == 3 || $condiçãoPagamento == 4) { //preciso gerar 2 titulos aqui, pois a condição 3 é 2 parcelas 30 dias cada
                 $dataVencimento1 = date('Y-m-d', strtotime($dataVenda . ' + 30 days'));
                 $dataVencimento2 = date('Y-m-d', strtotime($dataVencimento1 . ' + 30 days'));
             }
-    if($condiçãoPagamento == 1){
+    if ($condiçãoPagamento == 1) {
         $sql = "INSERT INTO titulos (ID, valor_venda, valor_pago,data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
         $result = $conexao->query($sql);
-    }
-    else
-    if ($condiçãoPagamento == 2) {
-        $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
-        $result = $conexao->query($sql);
+        echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
     } else
-        if ($condiçãoPagamento == 3) {
-            $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento1', '$id_pedido', '$pago')";
+        if ($condiçãoPagamento == 2) {
+            $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
             $result = $conexao->query($sql);
-            $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'".$valor/2 ."', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
-            $result = $conexao->query($sql);
-
-        }
+            echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
+        } else
+            if ($condiçãoPagamento == 3) {
+                $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . $valor / 2 . "', '$dataVenda', '$dataVencimento1', '$id_pedido', '$pago')";
+                $result = $conexao->query($sql);
+                $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . $valor / 2 . "', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
+                $result = $conexao->query($sql);
+                echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
+            } else
+                if ($condiçãoPagamento == 4) {
+                    $pago = 1;
+                    $sql = "INSERT INTO titulos (ID, valor_venda, valor_pago, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$entrada', '$entrada', '$dataVenda', '$dataVenda', '$id_pedido', '$pago')";
+                    $result = $conexao->query($sql);
+                    $pago = '';
+                    $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . ($valor - $entrada) / 2 . "', '$dataVenda', '$dataVencimento1', '$id_pedido', '$pago')";
+                    $result = $conexao->query($sql);
+                    $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . ($valor - $entrada) / 2 . "', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
+                    $result = $conexao->query($sql);
+                    echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
+                }
 }
 ?>

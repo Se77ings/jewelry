@@ -14,7 +14,6 @@
         href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,400;0,500;1,300;1,700&display=swap"
         rel="stylesheet">
     <style>
-       
         #sugestoes {
             border: 1px solid black;
             border-radius: 5px;
@@ -30,7 +29,7 @@
             border: solid 1px black;
         }
 
-        #valores p{
+        #valores p {
             margin: 0px;
             padding: 0px;
             font-size: 16px;
@@ -102,7 +101,8 @@
                     <div class="form-flex">
                         <label for="dataVenda" style="text-align:left;">Data da Venda:</label>
                         <input type="date" id="dataVenda"
-                            style="width:282px; padding: 0.375rem 0.75rem; border-radius:8px; border: solid 1px gainsboro;" name="dataVenda">
+                            style="width:282px; padding: 0.375rem 0.75rem; border-radius:8px; border: solid 1px gainsboro;"
+                            name="dataVenda">
                     </div>
                 </div>
                 <div class="col">
@@ -124,6 +124,7 @@
             <div class="" style="text-align:center;">
                 <button id="next" type="submit" class="btn btn-success">Registrar Venda</button>
             </div>
+            <input type="text" name="entrada" value="" id="entrada" style="display:none;">
     </main>
     </form>
 
@@ -131,6 +132,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        window.addEventListener('resize', function () {
+            Swal.update({
+                heightAuto: false, // Desativar a altura automática para que você possa definir manualmente
+                height: window.innerHeight, // Configurar a altura com a altura da janela
+            });
+        });
         function calculaParcelas(element) {
             console.log(element.value);
             const valores = document.getElementById("valores");
@@ -142,10 +149,32 @@
             } else if (element.value == 3) {
                 valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
                 <p>2 Parcelas de : R$ ${document.getElementById("valor").value / 2}</p>`;
-            }else if(element.value == 4){
-                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
-                <p>3 Parcelas de : R$ ${document.getElementById("valor").value / 3}</p>`;
-            }
+            } else if (element.value == 4) {
+                Swal.fire({
+                    title: 'Digite o valor da entrada:',
+                    input: 'text',
+                    inputAttributes: {
+                        autocapitalize: 'off'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Ok',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (valor) => {
+                        if (valor == "") {
+                            Swal.showValidationMessage(`Preencha o campo!`)
+                        }
+                        return { valor: valor }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById("entrada").value = result.value.valor;
+                        valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
+                        <p>Entrada: R$ ${result.value.valor}</p>
+                        <p>2 Parcelas de : R$ ${(document.getElementById("valor").value - result.value.valor) / 2}</p>`;
+                    }
+                
+            })}
         }
 
 

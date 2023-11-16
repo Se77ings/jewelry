@@ -10,7 +10,7 @@ if (isset($_POST['IDTitulo']) && isset($_POST['valor_quitado'])) {
     {
         require_once('../../model/conexao.php');
         $sql = "UPDATE titulos SET valor_pago = (valor_pago + $valor_quitado), pago = $quitado, data_quitacao = '$dataQuitacao' WHERE ID = $IDTitulo";
-        echo $sql;
+        // echo $sql;
         $result = $conexao->query($sql);
 
         if ($result) {

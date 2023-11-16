@@ -20,9 +20,12 @@ if (!isset($_SESSION['login'])) {
         a:hover {
             cursor: pointer;
         }
-        .navbar-collapse{
-            background-color: white;
-        } 
+        .collapse{
+            background-color: #00ac3b;
+            color: black;     
+            border-radius: 10px;      
+            }
+
         .sidebar-heading{
             background-color: #00ac3b;
         }
@@ -54,14 +57,15 @@ if (!isset($_SESSION['login'])) {
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light sidebar-heading" style="height: 58px;">
                 <div class="container-fluid">
-                    <button class="btn btn-success" id="sidebarToggle">Alternar</button>
+                    <button class="btn btn-success" id="sidebarToggle"><< Menu</button>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation"><span
                             class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                            <li class="nav-item active"><a class="nav-link" href="../model/encerrarSessao.php">Sair</a></li>
+                            <!-- <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -71,7 +75,7 @@ if (!isset($_SESSION['login'])) {
                                     <a class="dropdown-item" href="#!">Another action</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="../model/encerrarSessao.php">Sair</a>
-                                </div>
+                                </div> -->
                             </li>
                         </ul>
                     </div>
@@ -83,7 +87,7 @@ if (!isset($_SESSION['login'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     <script>
-    exibeContent(document.getElementById("3"));
+    // exibeContent(document.getElementById("5"));
         function exibeContent(opt) {
             gerenciaSelected();
             var frame = document.getElementById('frame');
@@ -101,7 +105,7 @@ if (!isset($_SESSION['login'])) {
                     frame.src = "Titulos/Direito/index.php";
                     break;
                 case '5':
-                    frame.src = "teste.html";
+                    frame.src = "Manutenção/index.php";
                     break;
                 case '6':
                     frame.src = "teste.html";
