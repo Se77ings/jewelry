@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION["login"])) {
+    header('Location: ../../index.php?unlog');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,13 +76,13 @@
 
     </div>
     <script>
-    var valor = document.getElementById("valor").innerText;
-        function toggleVisibility(){
+        var valor = document.getElementById("valor").innerText;
+        function toggleVisibility() {
             var id = document.getElementById("iconEye");
-            if(id.className == "bi bi-eye-slash"){
+            if (id.className == "bi bi-eye-slash") {
                 id.className = "bi bi-eye";
-                document.getElementById("valor").innerText =  valor;
-            }else{
+                document.getElementById("valor").innerText = valor;
+            } else {
                 id.className = "bi bi-eye-slash";
                 document.getElementById("valor").innerText = "R$ " + "*****";
             }

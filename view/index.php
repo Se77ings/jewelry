@@ -20,17 +20,45 @@ if (!isset($_SESSION['login'])) {
         a:hover {
             cursor: pointer;
         }
-        .collapse{
-            background-color: #00ac3b;
-            color: black;     
-            border-radius: 10px;      
-            }
 
-        .sidebar-heading{
+        .collapse {
+            background-color: #00ac3b;
+            color: black;
+            border-radius: 10px;
+        }
+
+        .sidebar-heading {
             background-color: #00ac3b;
         }
-        #sidebar-wrapper{
+
+        #sidebar-wrapper {
             border-right: solid 1px #00ac3b;
+        }
+
+        .sub-menu {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .sub-menu a {
+            padding-left: 20px;
+            background: lightgrey;
+            color: black;
+            position: relative;
+        }
+
+
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                height: 0;
+            }
+
+            to {
+                opacity: 1;
+                height: auto;
+            }
         }
     </style>
 </head>
@@ -48,24 +76,32 @@ if (!isset($_SESSION['login'])) {
                     onclick="exibeContent(this)">Carteira</a>
                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="4"
                     onclick="exibeContent(this)">Títulos > Direito</a>
-                 <a class="list-group-item list-group-item-action list-group-item-light p-3" id="5"
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" id="5"
                     onclick="exibeContent(this)">Manutenção</a>
-                <!--<a class="list-group-item list-group-item-action list-group-item-light p-3" id="6"
-                    onclick="exibeContent(this)">Btn6</a> -->
+                <a class="list-group-item list-group-item-action list-group-item-light p-3" id="6"
+                    onclick="exibeContent(this)">Consultas <span id="arrowbaixa"></span></a>
+                <div class="sub-menu" id="consultasSubMenu" style="display: none;">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" id="7"
+                        onclick="exibeContent(this)"> ▶ Pessoas</a>
+                    <!-- <a class="list-group-item list-group-item-action list-group-item-light p-3" id="7"
+                        onclick="exibeContent(this)">▶ Subitem 2</a> -->
+                </div>
+
             </div>
         </div>
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light sidebar-heading" style="height: 58px;">
                 <div class="container-fluid">
                     <button class="btn btn-success" id="sidebarToggle"><< Menu</button>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation"><span
-                            class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                            <li class="nav-item active"><a class="nav-link" href="../model/encerrarSessao.php">Sair</a></li>
-                            <!-- <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation"><span
+                                    class="navbar-toggler-icon"></span></button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                    <li class="nav-item active"><a class="nav-link"
+                                            href="../model/encerrarSessao.php">Sair</a></li>
+                                    <!-- <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
@@ -76,9 +112,9 @@ if (!isset($_SESSION['login'])) {
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="../model/encerrarSessao.php">Sair</a>
                                 </div> -->
-                            </li>
-                        </ul>
-                    </div>
+                                    </li>
+                                </ul>
+                            </div>
                 </div>
             </nav>
             <iframe src="" id="frame" width="100%" height="90%" frameborder="0"></iframe>
@@ -87,28 +123,39 @@ if (!isset($_SESSION['login'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     <script>
-    // exibeContent(document.getElementById("5"));
+        // exibeContent(document.getElementById("5"));
         function exibeContent(opt) {
             gerenciaSelected();
             var frame = document.getElementById('frame');
             switch (opt.id) {
                 case '1':
                     frame.src = "NovaVenda/index.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
                 case '2':
                     frame.src = "ConsultaVendas/index.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
                 case '3':
                     frame.src = "Carteira/index.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
                 case '4':
                     frame.src = "Titulos/Direito/index.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
                 case '5':
                     frame.src = "Manutenção/index.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
                 case '6':
-                    frame.src = "teste.html";
+                    var submenu = document.getElementById('consultasSubMenu');
+                    submenu.style.display = (submenu.style.display === 'none' || submenu.style.display === '') ? 'block' : 'none';
+                    //document.getElementById('arrowbaixa').innerHTML = (submenu.style.display === 'none' || submenu.style.display === '') ? '' : '▼';
+                    break;
+                case '7':
+                    frame.src = "Consultas/pessoas.php";
+                    document.body.classList.remove('sb-sidenav-toggled');
                     break;
             }
 
