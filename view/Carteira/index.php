@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION["login"])) {
+    header('Location: ../../index.php?unlog');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,7 +66,7 @@
         $totalRows = $result->rowCount();
         if ($totalRows > 0) {
             while ($row = $result->fetch()) {
-                echo "<p> " . DatetimeYYYYMMDDtoDDMMYYYY($row['data_transacao']) . "  -  Recebimento no valor de -> R$ " . convertePonto($row["valor_transacao"]) . "</p>";
+                echo "<p> " . DatetimeYYYYMMDDtoDDMMYYYY($row['data_transacao']) . "  -  Recebimento-> R$ " . convertePonto($row["valor_transacao"]) . "</p>";
             }
         } else {
             echo "0 results";
@@ -70,13 +76,13 @@
 
     </div>
     <script>
-    var valor = document.getElementById("valor").innerText;
-        function toggleVisibility(){
+        var valor = document.getElementById("valor").innerText;
+        function toggleVisibility() {
             var id = document.getElementById("iconEye");
-            if(id.className == "bi bi-eye-slash"){
+            if (id.className == "bi bi-eye-slash") {
                 id.className = "bi bi-eye";
-                document.getElementById("valor").innerText =  valor;
-            }else{
+                document.getElementById("valor").innerText = valor;
+            } else {
                 id.className = "bi bi-eye-slash";
                 document.getElementById("valor").innerText = "R$ " + "*****";
             }

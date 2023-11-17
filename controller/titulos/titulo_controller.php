@@ -1,5 +1,5 @@
 <?php
-var_dump($_POST);   
+// var_dump($_POST);   
 if (isset($_POST['IDTitulo']) && isset($_POST['valor_quitado'])) {
     $IDTitulo = $_POST['IDTitulo'];
     $valor_quitado = $_POST['valor_quitado'];

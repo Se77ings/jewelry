@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION["login"])) {
+    header('Location: ../../index.php?unlog');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,19 +17,20 @@
 
 <body>
     <div class="container mt-5">
+    <h3>Inserir novo registro:</h3>
         <form action="../../controller/manutencao/inserirNovo.php" method="POST">
             <div class="">
-                <input type="date" name="dataManutencao" class="form-control" id="dataManutencao">
-                <input type="text" name="id_produto" class="form-control" placeholder="Digite o ID do Produto">
-                <input type="text" name="descricao_produto" class="form-control" placeholder="Digite a Descrição do Produto">
+                <input type="date" name="dataManutencao" class="form-control mb-1" id="dataManutencao">
+                <input type="text" name="id_produto" class="form-control mb-1" placeholder="Digite o ID do Produto">
+                <input type="text" name="descricao_produto" class="form-control mb-1" placeholder="Digite a Descrição do Produto">
                 <input type="text" name="motivo" class="form-control" placeholder="Digite o Motivo">
-                <input type="submit" value="Registrar" class="btn btn-success">
+                <input type="submit" value="Registrar" class="btn btn-success" style="margin-left:140px; margin-top:15px; margin-bottom:15px;">
             </div>
         </form>
         <div>
             <h3>Registros:</h3>
             <hr>
-            <table class="table table-hover">
+            <table class="table table-hover" style="margin-left:10px">
             <thead class="table-dark">
                 <th>ID</th>
                 <th>Produto</th>

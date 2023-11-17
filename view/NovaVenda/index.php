@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION["login"])) {
+    header('Location: ../../index.php?unlog');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -63,7 +69,7 @@
                 <div class="col">
                     <div class="form-flex">
                         <label for="id_produto">ID:</label>
-                        <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto">
+                        <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto" required>
                     </div>
                 </div>
                 <div class="col">
@@ -71,7 +77,7 @@
                         <label for="valor">Valor:</label>
                         <div class="input-group form-flex" style="flex-direction:row" id="pai">
                             <span class="input-group-text">R$</span>
-                            <input type="text" name="valor" id="valor" class="form-control">
+                            <input type="text" name="valor" id="valor" class="form-control" required>
                         </div>
                     </div>
                 </div>
@@ -81,7 +87,7 @@
                 <hr>
                 <div class="col">
                     <div class="form-flex">
-                        <label for="nome">Nome:</label>
+                        <label for="nome" required>Nome:</label>
                         <input class="form-control" type="text" name="nome" id="nome" autocomplete="off">
                         <div id="sugestoes" class="sugestoes" style="display:none"></div>
                     </div>
@@ -122,7 +128,7 @@
                 </div>
             </div>
             <div class="" style="text-align:center;">
-                <button id="next" type="submit" class="btn btn-success">Registrar Venda</button>
+                <button id="next" type="submit" class="btn btn-success" disabled>Registrar Venda</button>
             </div>
             <input type="text" name="entrada" value="" id="entrada" style="display:none;">
     </main>
@@ -133,11 +139,21 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         window.addEventListener('resize', function () {
-            Swal.update({
-                heightAuto: false, // Desativar a altura automática para que você possa definir manualmente
-                height: window.innerHeight, // Configurar a altura com a altura da janela
-            });
+            const popup = Swal.getPopup();
+            const isOpen = Swal.isVisible();
+
+            if (isOpen) {
+                const windowHeight = window.innerHeight;
+                const popupHeight = popup.offsetHeight;
+
+                // Calcule a altura máxima do popup
+                const maxHeight = Math.min(windowHeight - 20, popupHeight);
+
+                // Ajuste a altura do popup
+                popup.style.maxHeight = maxHeight + 'px';
+            }
         });
+
         function calculaParcelas(element) {
             console.log(element.value);
             const valores = document.getElementById("valores");
@@ -156,7 +172,8 @@
                     inputAttributes: {
                         autocapitalize: 'off'
                     },
-                    showCancelButton: true,
+                    showCancelButton: false,
+                    allowOutsideClick: false,
                     confirmButtonText: 'Ok',
                     showLoaderOnConfirm: true,
                     preConfirm: (valor) => {
@@ -173,8 +190,13 @@
                         <p>Entrada: R$ ${result.value.valor}</p>
                         <p>2 Parcelas de : R$ ${(document.getElementById("valor").value - result.value.valor) / 2}</p>`;
                     }
-                
-            })}
+
+                })
+            }
+
+            if (valores.innerHTML != "") {
+                document.getElementById("next").disabled = false;
+            }
         }
 
 
@@ -229,9 +251,10 @@
                                     Swal.fire({
                                         title: 'Cadastre o usuário abaixo:',
                                         margin: 'auto',
-                                        icon: 'info',
+                                        // icon: 'info',
                                         html: '<input id="swal-input1" class="swal2-input" style="margin:5px 0px" placeholder="Nome">' +
                                             '<input id="swal-input3" class="swal2-input" style="margin:5px 0px" placeholder="Telefone">',
+                                        scrollbarPadding: false,
                                         focusConfirm: false,
                                         preConfirm: () => {
                                             const nome = Swal.getPopup().querySelector('#swal-input1').value
