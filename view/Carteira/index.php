@@ -66,7 +66,7 @@ if (!isset($_SESSION["login"])) {
         $totalRows = $result->rowCount();
         if ($totalRows > 0) {
             while ($row = $result->fetch()) {
-                echo "<p> " . DatetimeYYYYMMDDtoDDMMYYYY($row['data_transacao']) . "  -  Recebimento no valor de -> R$ " . convertePonto($row["valor_transacao"]) . "</p>";
+                echo "<p> " . DatetimeYYYYMMDDtoDDMMYYYY($row['data_transacao']) . "  -  Recebimento-> R$ " . convertePonto($row["valor_transacao"]) . "</p>";
             }
         } else {
             echo "0 results";

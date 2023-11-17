@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = $conexao->query($sql);
                 echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
             } else
-                if ($condiçãoPagamento == 4) {
+                if ($condiçãoPagamento == 4 && isset($_POST['entrada'])) {
                     $pago = 1;
                     $sql = "INSERT INTO titulos (ID, valor_venda, valor_pago, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$entrada', '$entrada', '$dataVenda', '$dataVenda', '$id_pedido', '$pago')";
                     $result = $conexao->query($sql);
@@ -89,6 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . ($valor - $entrada) / 2 . "', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
                     $result = $conexao->query($sql);
                     echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
+                }else{
+                    echo "Houve um erro ao gerar as parcelas.";
                 }
 }
 ?>

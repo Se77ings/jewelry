@@ -47,7 +47,18 @@ if (!isset($_SESSION['login'])) {
             position: relative;
         }
 
+        .sidebar-heading {
+            background-color: #00ac3b;
+        }
 
+        #sidebar-wrapper {
+            border-right: solid 1px #00ac3b;
+        }
+
+        #sairOption {
+            margin: 0;
+            color: white;
+        }
 
         @keyframes fadeIn {
             from {
@@ -58,6 +69,28 @@ if (!isset($_SESSION['login'])) {
             to {
                 opacity: 1;
                 height: auto;
+            }
+
+
+        }
+
+        @media screen and (max-width:500px) {
+            .collapse {
+                background: none;
+            }
+
+            .collapse #sairOption {
+                position: fixed;
+                top: 50px;
+                right: 15px;
+                background: none;
+                border-radius: 10px;
+                text-align: center;
+                color: white;
+                background-color: grey;
+                width: 60px;
+                margin-left: 80%;
+                padding: 5px;
             }
         }
     </style>
@@ -92,15 +125,18 @@ if (!isset($_SESSION['login'])) {
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light sidebar-heading" style="height: 58px;">
                 <div class="container-fluid">
-                    <button class="btn btn-success" id="sidebarToggle"><< Menu</button>
+                    <button class="btn btn-success" id="sidebarToggle">
+                        << Menu</button>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                 aria-expanded="false" aria-label="Toggle navigation"><span
                                     class="navbar-toggler-icon"></span></button>
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                                    <li class="nav-item active"><a class="nav-link"
-                                            href="../model/encerrarSessao.php">Sair</a></li>
+                                    <li class="nav-item active"><a class="nav-link" href="../model/encerrarSessao.php">
+                                            <p id="sairOption">Sair</p>
+
+                                        </a></li>
                                     <!-- <li class="nav-item active"><a class="nav-link" href="#!">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
                             <li class="nav-item dropdown">

@@ -112,7 +112,7 @@ if (!isset($_SESSION["login"])) {
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="../../assets/global_functions/dateAndNumberFormattingJS.js"></script>
     <script>
         var dataQuitacaoInput = document.getElementById("dataQuitacao");
 
@@ -151,24 +151,25 @@ if (!isset($_SESSION["login"])) {
             var dataQuitacao = document.getElementById("dataQuitacao").value;
             var IDTitulo = elemento.id;
             var valor = elemento.children[2].innerHTML;
-            console.log(elemento)
-            console.log(valor, IDTitulo);
-
+            // console.log("elemento-> "+elemento)
+            // console.log(valor, IDTitulo);
 
             Swal.fire({
                 title: 'Confirme o Valor:',
-                html: `<label>R$: &nbsp;</label><input id="valorDigitado" type="number" value=${parseFloat(valor)}>`,
+                html: `<label>R$: &nbsp;</label><input id="valorDigitado" type="number" value=${convertePonto(valor)}>`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: 'Confirmo',
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    valorDigitado = parseFloat(valorDigitado)
-                    valor = parseFloat(valor)
-
                     var valorDigitado = document.getElementById("valorDigitado").value
-                    console.log(valorDigitado);
+                    valorDigitado = parseFloat(valorDigitado)
+                    valor = convertePonto(valor)
+                    
+                    // console.log("Valor -> " + valor);
+                    // console.log("Valor digitado -> " + valorDigitado);
+
                     if (valorDigitado > valor) {
                         Swal.fire(
                             'Erro!',
