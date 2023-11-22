@@ -70,8 +70,6 @@ if (!isset($_SESSION['login'])) {
                 opacity: 1;
                 height: auto;
             }
-
-
         }
 
         @media screen and (max-width:500px) {
