@@ -17,22 +17,33 @@ if (!isset($_SESSION['login'])) {
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link href="assets/lib/css/styles.css" rel="stylesheet" />
     <style>
+        :root{
+            --bs-green: #00ac3b;
+            --magenta-color: #D7008E
+        }
+
+        #sidebarToggle{
+            border: solid 1px black;
+            box-shadow: 3px 1px 10px black;
+            margin-right: 15px;
+        }
+
         a:hover {
             cursor: pointer;
         }
 
         .collapse {
-            background-color: #00ac3b;
+            background-color: var(--magenta-color);
             color: black;
             border-radius: 10px;
         }
 
         .sidebar-heading {
-            background-color: #00ac3b;
+            background-color: var(--magenta-color);
         }
 
         #sidebar-wrapper {
-            border-right: solid 1px #00ac3b;
+            border-right: solid 1px var(--magenta-color);
         }
 
         .sub-menu {
@@ -48,11 +59,11 @@ if (!isset($_SESSION['login'])) {
         }
 
         .sidebar-heading {
-            background-color: #00ac3b;
+            background-color: var(--magenta-color);
         }
 
         #sidebar-wrapper {
-            border-right: solid 1px #00ac3b;
+            border-right: solid 1px var(--magenta-color);
         }
 
         #sairOption {

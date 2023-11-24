@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Pedido nº </title>
     <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
-    <link rel="stylesheet" href="../assets/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/lib/css/styles.css">
     <style>
         body, h2, h3, h4, h1{
             font-size: 1.1em;
