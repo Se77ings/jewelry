@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $produto_valores = $_POST['produto_valor'];
     $valor = 0;
 
-//Setando o valor:
+    //Setando o valor:
     for ($i = 0; $i < count($produto_valores); $i++) {
         $valor = $valor + $produto_valores[$i];
     }
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     // var_dump($id_cliente);
 
-//Inserindo Pedido
+    //Inserindo Pedido
     $sql = "INSERT INTO pedidos (ID, valor, id_cliente, data, forma_pagamento) VALUES (NULL, '$valor', '$id_cliente', '$dataVenda', '$condiçãoPagamento')";
     $result = $conexao->query($sql);
 
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "<script>alert('Erro ao realizar pedido!');</script>";
     }
-//Inserir o Título de Direito:
+    //Inserir o Título de Direito:
     $pago = '';
 
     $sqlGetLastInsertID = "SELECT id FROM pedidos ORDER BY id DESC LIMIT 1";
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Erro na obtenção do ID do pedido";
     }
 
-//Inserindo Produtos:
+    //Inserindo Produtos:
     for ($i = 0; $i < count($produto_ids); $i++) {
         $produto_id = $produto_ids[$i];
         $produto_valor = $produto_valores[$i];
@@ -75,17 +75,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // echo "\n";echo $sql;
     }
 
-//Inserindo Parcelas:
+    //Inserindo Parcelas:
     if ($condiçãoPagamento == 1) {
         $dataVencimento = $dataVenda;
         $pago = 1;
     } else
         if ($condiçãoPagamento == 2) {
             $dataVencimento = date('Y-m-d', strtotime($dataVenda . ' + 30 days')); // deixei 30 dias por padrao
+            $dataVencimento = date('Y-m-10', strtotime($dataVencimento));
         } else
             if ($condiçãoPagamento == 3 || $condiçãoPagamento == 4) { //preciso gerar 2 titulos aqui, pois a condição 3 é 2 parcelas 30 dias cada
                 $dataVencimento1 = date('Y-m-d', strtotime($dataVenda . ' + 30 days'));
+                $dataVencimento1 = date('Y-m-10', strtotime($dataVencimento1));
+
                 $dataVencimento2 = date('Y-m-d', strtotime($dataVencimento1 . ' + 30 days'));
+                $dataVencimento2 = date('Y-m-10', strtotime($dataVencimento2));
+
             }
     if ($condiçãoPagamento == 1) {
         $sql = "INSERT INTO titulos (ID, valor_venda, valor_pago,data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'$valor', '$valor', '$dataVenda', '$dataVencimento', '$id_pedido', '$pago')";
@@ -114,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $sql = "INSERT INTO titulos (ID, valor_venda, data_emissao, data_vencimento, pedido_referencia, pago) VALUES (NULL,'" . ($valor - $entrada) / 2 . "', '$dataVenda', '$dataVencimento2', '$id_pedido', '$pago')";
                     $result = $conexao->query($sql);
                     echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
-                }else{
+                } else {
                     echo "Houve um erro ao gerar as parcelas.";
                 }
 }
