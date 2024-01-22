@@ -1,20 +1,35 @@
 <?php
-require_once('../../model/conexao.php');
-// var_dump($_POST);
-// array(4) { ["id_produto"]=> string(1) "1" ["valor"]=> string(2) "25" ["nome"]=> string(13) "Gabriel Lucas" ["telefone"]=> string(11) "17992304335" }
 
+// -----------------------------------------------------------IDEAL----------------------------------------------------------- \\
+//                                                                                                                             \\
+// Usar Begin Transaction e Commit para garantir que tudo será inserido corretamente                                           \\
+// Criar verificações para confirmar que tudo foi inserido, e caso não, retornar um erro informando aonde deu erro de inserção \\
+//                                                                                                                             \\
+//-----------------------------------------------------------------------------------------------------------------------------\\
+
+
+
+require_once('../../model/conexao.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // var_dump($_POST);
+    var_dump($_POST);
     //Inserindo o Pedido
     $id_produto = $_POST['id_produto'];
-    $valor = $_POST['valor'];
     $nome = $_POST['nome'];
     $dataVenda = $_POST['dataVenda'];
     $condiçãoPagamento = $_POST['condiçãoPagamento'];
+    $valorFinal = $_POST['valorFinal'];
     if (isset($_POST['entrada'])) {
         $entrada = $_POST['entrada'];
     }
 
+    $produto_ids = $_POST['produto_id'];
+    $produto_valores = $_POST['produto_valor'];
+    $valor = 0;
+
+//Setando o valor:
+    for ($i = 0; $i < count($produto_valores); $i++) {
+        $valor = $valor + $produto_valores[$i];
+    }
 
     $sqlIDCliente = "SELECT id FROM pessoas WHERE nome = :nome";
     $stmt = $conexao->prepare($sqlIDCliente);
@@ -28,17 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     // var_dump($id_cliente);
 
-    $sql = "INSERT INTO pedidos (ID, id_produto, valor, id_cliente, data) VALUES (NULL,'$id_produto', '$valor', '$id_cliente', '$dataVenda')";
+//Inserindo Pedido
+    $sql = "INSERT INTO pedidos (ID, valor, id_cliente, data, forma_pagamento) VALUES (NULL, '$valor', '$id_cliente', '$dataVenda', '$condiçãoPagamento')";
     $result = $conexao->query($sql);
 
     if ($result) {
         echo "<script>alert('Pedido realizado com sucesso!');</script>";
-        // echo "<script>window.location.href = 'index.php';</script>";
     } else {
         echo "<script>alert('Erro ao realizar pedido!');</script>";
-        // echo "<script>window.location.href = 'index.php';</script>";
     }
-    //Inserir o Título de Direito:
+//Inserir o Título de Direito:
     $pago = '';
 
     $sqlGetLastInsertID = "SELECT id FROM pedidos ORDER BY id DESC LIMIT 1";
@@ -51,6 +65,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "Erro na obtenção do ID do pedido";
     }
 
+//Inserindo Produtos:
+    for ($i = 0; $i < count($produto_ids); $i++) {
+        $produto_id = $produto_ids[$i];
+        $produto_valor = $produto_valores[$i];
+
+        $sql = "INSERT INTO produto_pedido(id_produto, codigo, valor, pedido_referencia) VALUES (NULL, '$produto_id', '$produto_valor', '$id_pedido')";
+        $result = $conexao->query($sql);
+        // echo "\n";echo $sql;
+    }
+
+//Inserindo Parcelas:
     if ($condiçãoPagamento == 1) {
         $dataVencimento = $dataVenda;
         $pago = 1;

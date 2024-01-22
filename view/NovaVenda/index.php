@@ -15,6 +15,8 @@ if (!isset($_SESSION["login"])) {
     <title>Registrar Nova Venda</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100;0,200;0,400;0,500;1,300;1,700&display=swap"
@@ -41,9 +43,43 @@ if (!isset($_SESSION["login"])) {
             font-size: 16px;
         }
 
+        .last-Son {
+            flex: 0.5;
+            /* Ajuste a flexibilidade da terceira coluna conforme necessário */
+            /* Além disso, você pode ajustar a largura conforme necessário */
+            max-width: 50px;
+        }
+
+        .bi-plus-circle-fill:hover {
+            cursor: pointer;
+            scale: 1.2;
+            transition: 0.2s;
+        }
+
+        .bi-plus-circle-fill:active {
+            color: blue;
+            scale: 2.2;
+        }
+
+        #tableProdutos {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #tableProdutos th {
+            text-align: center;
+        }
+
+        #tableProdutos td {
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 1px;
+            text-align: center;
+        }
+
         @media screen and (max-width:500px) {
             #valor {
-                width: 95px;
+                width: 80px;
             }
         }
 
@@ -68,8 +104,8 @@ if (!isset($_SESSION["login"])) {
                 <hr>
                 <div class="col">
                     <div class="form-flex">
-                        <label for="id_produto">ID:</label>
-                        <input class="form-control" style="width: 100px" type="text" name="id_produto" id="id_produto" required>
+                        <label for="id_produto">Código:</label>
+                        <input class="form-control" style="width: 70px" type="text" name="id_produto" id="id_produto">
                     </div>
                 </div>
                 <div class="col">
@@ -77,8 +113,14 @@ if (!isset($_SESSION["login"])) {
                         <label for="valor">Valor:</label>
                         <div class="input-group form-flex" style="flex-direction:row" id="pai">
                             <span class="input-group-text">R$</span>
-                            <input type="text" name="valor" id="valor" class="form-control" required>
+                            <input type="text" name="valor" id="valor" class="form-control">
                         </div>
+                    </div>
+                </div>
+                <div class="col last-Son">
+                    <div class="form-flex">
+                        <label for="">&nbsp;</label>
+                        <h2 style="color:green;" class="bi bi-plus-circle-fill" onclick="adicionarProduto()"></h2>
                     </div>
                 </div>
             </div>
@@ -127,10 +169,18 @@ if (!isset($_SESSION["login"])) {
                     <div class="container" id="valores"></div>
                 </div>
             </div>
+            <div class="row" style="display: none;" id="produtos">
+            </div>
+
+            <input type="hidden" name="num_produtos" id="num_produtos" value="0">
+            <div id="produtos_container"></div>
+
+
+            <input type="text" name="entrada" value="" id="entrada" style="display:none;">
+            <input type="text" style='display:none' id='valorFinal'>
             <div class="" style="text-align:center;">
                 <button id="next" type="submit" class="btn btn-success" disabled>Registrar Venda</button>
             </div>
-            <input type="text" name="entrada" value="" id="entrada" style="display:none;">
     </main>
     </form>
 
@@ -138,6 +188,100 @@ if (!isset($_SESSION["login"])) {
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function updateListaProdutos() {
+            var produtosContainer = document.getElementById("produtos_container");
+            var numProdutosInput = document.getElementById("num_produtos");
+            produtosContainer.innerHTML = "";
+
+
+            var produtos = document.getElementById("produtos");
+            var tabelaHTML = "<h5>Produtos neste pedido:</h5><hr><table id='tableProdutos'><tr><th>Código</th><th>Valor</th><th>Ações</th></tr>";
+            produtos.style.display = "table"; // Altera o display para "table"
+
+            Produtos.forEach(produto => {
+                tabelaHTML += `
+            <tr>
+                <td>${produto.id}</td>
+                <td>R$ ${produto.valor}</td>
+                <td>
+                    <h2 style="color:red;" class="bi bi-x-circle-fill" onclick="removerProduto(${produto.id})"></h2>
+                </td>
+            </tr>`;
+            });
+            Produtos.forEach(produto => {
+                produtosContainer.innerHTML += `
+            <input type="hidden" name="produto_id[]" value="${produto.id}">
+            <input type="hidden" name="produto_valor[]" value="${produto.valor}">
+        `;
+            });
+
+            tabelaHTML += "</table>";
+            tabelaHTML += "<p style='text-align:center'> <b>Valor Total:</b> R$ " + Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0) + "</p>";
+
+            valorFinal = Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0);
+            document.getElementById("valorFinal").value =valorFinal;
+
+            produtos.innerHTML = tabelaHTML;
+            numProdutosInput.value = Produtos.length;
+
+        }
+
+        document.getElementById("formulario").addEventListener("submit", function (event) {
+            // Chama a função para atualizar os campos ocultos com os dados da lista de produtos
+            updateListaProdutos();
+        });
+
+        var Produtos = [];
+
+        function produtoJaInserido(id) {
+            return Produtos.some(produto => produto.id === id);
+        }
+
+        function adicionarProduto() {
+            var idProduto = document.getElementById('id_produto');
+            var valor = document.getElementById('valor');
+
+
+            if (idProduto.value == "" && valor.value == "") {
+                // console.log("Vazio");
+            } else if (idProduto.value == '' && valor.value != '') {
+                // console.log("Valor preenchido, id vazio");
+            } else if (idProduto.value != '' && valor.value == '') {
+                // console.log("Id preenchido, valor vazio");
+            } else {
+                // console.log("Ambos preenchidos");
+
+                // Verifica se o produto já está na lista
+                if (!produtoJaInserido(idProduto.value)) {
+                    var produto = {
+                        id: idProduto.value,
+                        valor: valor.value
+                    };
+                    idProduto.value = "";
+                    valor.value = "";
+
+                    Produtos.push(produto);
+                    // console.log("Produto inserido:", produto);
+                    // console.log("Lista de produtos:", Produtos);
+                } else {
+                    alert("Produto já está na lista! Insira outro")
+                    // console.log("Produto já está na lista. Não foi inserido novamente.");
+                }
+            }
+            updateListaProdutos();
+        }
+
+        function removerProduto(id) {
+            // console.log("Removendo produto com ID:", id);
+
+            // Convertendo o id para string para garantir uma comparação correta
+            id = id.toString();
+
+            Produtos = Produtos.filter(produto => produto.id !== id);
+            // console.log("Produto removido com sucesso. Nova lista de produtos:", Produtos);
+            updateListaProdutos();
+        }
+
         window.addEventListener('resize', function () {
             const popup = Swal.getPopup();
             const isOpen = Swal.isVisible();
@@ -155,16 +299,16 @@ if (!isset($_SESSION["login"])) {
         });
 
         function calculaParcelas(element) {
-            console.log(element.value);
+            // console.log(element.value);
             const valores = document.getElementById("valores");
             valores.innerHTML = "";
             if (element.value == 1) {
-                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value} - PAGO</p>`;
+                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valorFinal").value} - PAGO</p>`;
             } else if (element.value == 2) {
-                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>`;
+                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valorFinal").value}</p>`;
             } else if (element.value == 3) {
-                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
-                <p>2 Parcelas de : R$ ${document.getElementById("valor").value / 2}</p>`;
+                valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valorFinal").value}</p>
+                <p>2 Parcelas de : R$ ${document.getElementById("valorFinal").value / 2}</p>`;
             } else if (element.value == 4) {
                 Swal.fire({
                     title: 'Digite o valor da entrada:',
@@ -186,9 +330,9 @@ if (!isset($_SESSION["login"])) {
                 }).then((result) => {
                     if (result.isConfirmed) {
                         document.getElementById("entrada").value = result.value.valor;
-                        valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valor").value}</p>
+                        valores.innerHTML = `<p>Valor Total: R$ ${document.getElementById("valorFinal").value}</p>
                         <p>Entrada: R$ ${result.value.valor}</p>
-                        <p>2 Parcelas de : R$ ${(document.getElementById("valor").value - result.value.valor) / 2}</p>`;
+                        <p>2 Parcelas de : R$ ${(document.getElementById("valorFinal").value - result.value.valor) / 2}</p>`;
                     }
 
                 })
