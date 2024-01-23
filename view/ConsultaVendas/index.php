@@ -52,7 +52,7 @@ if (!isset($_SESSION["login"])) {
         <h4>Consultando Pedidos:</h4>
         <hr>
         <div style="display:flex;flex-direction:column;width:50%;margin:auto;justify-content:space-between;">
-            <p style="text-align:center;margin:0px;">Janeiro/2024</p>
+            <!-- <p style="text-align:center;margin:0px;">Janeiro/2024</p> -->
             <div style="display:flex;flex-direction:row;margin:auto;" id="futureFilter">
                 <br>
                 <p>Filtrar: </p><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"

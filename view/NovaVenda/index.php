@@ -105,7 +105,7 @@ if (!isset($_SESSION["login"])) {
                 <div class="col">
                     <div class="form-flex">
                         <label for="id_produto">Código:</label>
-                        <input class="form-control" style="width: 70px" type="text" name="id_produto" id="id_produto">
+                        <input class="form-control" style="width: 70px" type="number" name="id_produto" id="id_produto">
                     </div>
                 </div>
                 <div class="col">
@@ -113,7 +113,7 @@ if (!isset($_SESSION["login"])) {
                         <label for="valor">Valor:</label>
                         <div class="input-group form-flex" style="flex-direction:row" id="pai">
                             <span class="input-group-text">R$</span>
-                            <input type="text" name="valor" id="valor" class="form-control">
+                            <input type="number" name="valor" id="valor" class="form-control">
                         </div>
                     </div>
                 </div>
