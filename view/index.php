@@ -168,7 +168,7 @@ if (!isset($_SESSION['login'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     <script>
-        // exibeContent(document.getElementById("5"));
+        exibeContent(document.getElementById("1"));
         function exibeContent(opt) {
             gerenciaSelected();
             var frame = document.getElementById('frame');

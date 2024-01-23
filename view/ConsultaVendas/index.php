@@ -34,19 +34,34 @@ if (!isset($_SESSION["login"])) {
             text-align: center;
             margin-top: 10px;
         }
-        .linha-clicavel{
+
+        .linha-clicavel {
             cursor: pointer;
         }
 
-        @media screen and (max-width:500px) {
-            
+        #futureFilter, #futureFilter>p, #futureFilter>svg {
+            display: none;
         }
+
+        @media screen and (max-width:500px) {}
     </style>
 </head>
 
 <body>
     <div class="container container-fluid">
         <h4>Consultando Pedidos:</h4>
+        <hr>
+        <div style="display:flex;flex-direction:column;width:50%;margin:auto;justify-content:space-between;">
+            <p style="text-align:center;margin:0px;">Janeiro/2024</p>
+            <div style="display:flex;flex-direction:row;margin:auto;" id="futureFilter">
+                <br>
+                <p>Filtrar: </p><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                    class="bi bi-funnel-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
+                </svg>
+            </div>
+        </div>
         <hr>
         <table class="table table-hover">
             <tr id="header" style='border-bottom:solid black 1px'>
