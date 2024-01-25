@@ -89,7 +89,7 @@ if (!isset($_SESSION["login"])) {
                                 $valor_pago = $row['valor_pago'];
                                 $valor_venda = $row['valor_venda'];
 
-                                echo "<tr id='" . $row['IDTitulo'] . "'>";
+                                echo "<tr id='" . $row['IDTitulo'] . "' onclick='redirecionarParaDetalhes(" . $row["pedido_referencia"] . ")'>";
                                 echo "<td>";
                                 echo "<div class='card-body'>";
                                 echo "<p class='pDatas'>" . YYYYMMDDtoDDMMYYYY($row['dataP'], '/') . "</p>";
@@ -104,6 +104,13 @@ if (!isset($_SESSION["login"])) {
                         } else {
                             echo "0 results";
                         }
+                        echo "
+                    <script>
+                        function redirecionarParaDetalhes(id) {
+                            window.location.href = '../../DetalhandoPedidos/index.php?ID=' + id;
+                        }
+                    </script>
+                    ";
 
                         ?>
                     </tr>
@@ -166,7 +173,7 @@ if (!isset($_SESSION["login"])) {
                     var valorDigitado = document.getElementById("valorDigitado").value
                     valorDigitado = parseFloat(valorDigitado)
                     valor = convertePonto(valor)
-                    
+
                     // console.log("Valor -> " + valor);
                     // console.log("Valor digitado -> " + valorDigitado);
 

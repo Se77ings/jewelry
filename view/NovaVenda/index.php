@@ -397,7 +397,7 @@ if (!isset($_SESSION["login"])) {
                                         margin: 'auto',
                                         // icon: 'info',
                                         html: '<input id="swal-input1" class="swal2-input" style="margin:5px 0px" placeholder="Nome">' +
-                                            '<input id="swal-input3" class="swal2-input" style="margin:5px 0px" placeholder="Telefone">',
+                                            '<input id="swal-input3" type="number" class="swal2-input" style="margin:5px 0px" placeholder="Telefone">',
                                         scrollbarPadding: false,
                                         focusConfirm: false,
                                         preConfirm: () => {

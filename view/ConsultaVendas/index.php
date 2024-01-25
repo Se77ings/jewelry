@@ -39,11 +39,54 @@ if (!isset($_SESSION["login"])) {
             cursor: pointer;
         }
 
-        #futureFilter, #futureFilter>p, #futureFilter>svg {
+        #futureFilter,
+        #futureFilter>p,
+        #futureFilter>svg {
             display: none;
         }
 
-        @media screen and (max-width:500px) {}
+        .LinhaMes {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .LinhaMes button {
+            border: none;
+            background-color: transparent;
+            color: black;
+            font-size: 20px;
+        }
+
+        button:hover {
+            transition: 0.4s;
+            scale: 1.5;
+        }
+
+        button:active {
+            color: white;
+            transition: 0s;
+        }
+
+        .LinhaMes p {
+            margin: 0px;
+            font-size: 20px;
+        }
+
+        @media screen and (max-width:500px) {
+
+            button:hover {
+                transition: 0s;
+                scale: 1;
+            }
+
+            button:active {
+                color: white;
+                transition: 0.2s;
+                scale: 1.5;
+            }
+        }
     </style>
 </head>
 
@@ -52,7 +95,44 @@ if (!isset($_SESSION["login"])) {
         <h4>Consultando Pedidos:</h4>
         <hr>
         <div style="display:flex;flex-direction:column;width:50%;margin:auto;justify-content:space-between;">
-            <!-- <p style="text-align:center;margin:0px;">Janeiro/2024</p> -->
+            <p style="text-align:center;margin:0px;">
+                <?php
+                $meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+
+                if (isset($_GET['mes']) && $_GET['mes'] != null) {
+                    $mesAtual = $_GET['mes'];
+                    $anoAtual = $_GET['ano'];
+                    echo $anoAtual;
+                } else {
+                    $anoAtual = date('Y');
+                    echo $anoAtual;
+                    $dataHoje = date(DATE_ATOM);
+                    $dataHoje = explode('T', $dataHoje);
+                    $mesAtual = explode('-', $dataHoje[0]);
+                    $mesAtual = $mesAtual[1];
+                }
+                function verificaProximoMes($mesAtual, $direcao)
+                {
+                    if ($direcao == 'back') {
+                        if ($mesAtual == 1) {
+                            return 12;
+                        } else {
+                            return $mesAtual - 1;
+                        }
+                    } else {
+                        if ($mesAtual == 12) {
+                            return 1;
+                        } else {
+                            return $mesAtual + 1;
+                        }
+                    }
+                }
+
+                // vou ter que fazer o seguinte: quando clicar em algum botão, redirecionar para a pagina denovo, com um get. if tenha get alterar a logica acima.. else manter a logica acima.
+                echo "<div class='LinhaMes'><button onclick='mudaMes(" . verificaProximoMes($mesAtual, 'back') . ", " . $anoAtual . ", \"back\")'><</button><p>" . $meses[$mesAtual - 1] . "</p><button onclick='mudaMes(" . verificaProximoMes($mesAtual, 'front') . ", " . $anoAtual . ", \"front\")'>></button></div>";
+                ?>
+            </p>
             <div style="display:flex;flex-direction:row;margin:auto;" id="futureFilter">
                 <br>
                 <p>Filtrar: </p><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
@@ -77,8 +157,9 @@ if (!isset($_SESSION["login"])) {
 
                 // Retrieve data from the sales table
                 $sql = "SELECT p.ID, p.data, p.valor, prs.nome as 'cliente' FROM pedidos p
-                        LEFT JOIN pessoas prs on prs.ID = p.id_cliente
-                        ORDER BY data ASC";
+                LEFT JOIN pessoas prs on prs.ID = p.id_cliente
+                WHERE MONTH(p.data) = $mesAtual AND YEAR(p.data) = $anoAtual
+                ORDER BY p.data ASC";
                 $result = $conexao->query($sql);
 
                 // Verifique se a consulta foi bem-sucedida
@@ -95,7 +176,7 @@ if (!isset($_SESSION["login"])) {
                             echo "</tr>";
                         }
                     } else {
-                        echo "0 results";
+                        echo "Nenhum Resultado encontrado!";
                     }
                 } else {
                     // Trate o erro na execução da consulta, se necessário
@@ -106,7 +187,24 @@ if (!isset($_SESSION["login"])) {
                         function redirecionarParaDetalhes(id) {
                             window.location.href = '../DetalhandoPedidos/index.php?ID=' + id;
                         }
+
+                        function mudaMes(mes, ano, op){
+                            console.log('ano recebido: '+ano);
+                            if(op == 'back'){
+                                if(mes == 12){
+                                    ano = ano - 1;
+                                }
+                            }else{
+                                if(mes == 1){
+                                    ano = ano + 1;
+                                }
+                            }
+                            console.log('ano enviado: '+ano);
+
+                            window.location.href = 'index.php?mes='+mes+'&ano='+ano;
+                        }
                     </script>
+                    
                     ";
                 $conexao = null;
 
