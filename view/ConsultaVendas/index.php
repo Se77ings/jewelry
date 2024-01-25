@@ -158,7 +158,8 @@ if (!isset($_SESSION["login"])) {
                 // Retrieve data from the sales table
                 $sql = "SELECT p.ID, p.data, p.valor, prs.nome as 'cliente' FROM pedidos p
                 LEFT JOIN pessoas prs on prs.ID = p.id_cliente
-                WHERE MONTH(p.data) = $mesAtual AND YEAR(p.data) = $anoAtual
+                WHERE MONTH(p.data) = $mesAtual AND YEAR(p.data) = $anoAtual 
+                AND p.cancelado IS NULL
                 ORDER BY p.data ASC";
                 $result = $conexao->query($sql);
 

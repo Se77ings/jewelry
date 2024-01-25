@@ -1,5 +1,12 @@
-v1.01:
+v1.01 - 24/01/2024:
 *Tornei clicável o titulo>direito para consultar pedido
 *Adicionei um filtro simples de consulta pedidos por Mês
 
 <!-- -->
+
+v1.02 - 25/01/2024:
+*Adicionei ao css principal atributos para evitar a mudança de resolução causada pela fonte
+*bugfix: devido a atualização anterior nao estava sendo possível mais quitar títulos. agora voltou a funcionar
+*Opção de Cancelar pedidos
+*Adicionei descrição do produto ao registrar venda
+*Adicionei restrições para registrar a venda, para evitar bugs na inserção

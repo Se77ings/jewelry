@@ -11,7 +11,7 @@
 
 require_once('../../model/conexao.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    var_dump($_POST);
+    // var_dump($_POST);
     //Inserindo o Pedido
     $id_produto = $_POST['id_produto'];
     $nome = $_POST['nome'];
@@ -22,8 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $entrada = $_POST['entrada'];
     }
 
+    if($condiçãoPagamento == 4 && (!isset($_POST['entrada']) || $_POST['entrada'] == '' || $_POST['entrada'] == 0)){
+        echo "<script>alert('!!! ERRO !! Pedido sem valor de entrada!!!! Digite novamente');</script>";
+        echo "<script>window.location.href = '../../view/NovaVenda/index.php';</script>";
+    }
+
     $produto_ids = $_POST['produto_id'];
     $produto_valores = $_POST['produto_valor'];
+    $produto_descricoes = $_POST['produto_descricao'];
+
     $valor = 0;
 
     //Setando o valor:
@@ -69,8 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     for ($i = 0; $i < count($produto_ids); $i++) {
         $produto_id = $produto_ids[$i];
         $produto_valor = $produto_valores[$i];
+        $descricaoProduto = $produto_descricoes[$i];
 
-        $sql = "INSERT INTO produto_pedido(id_produto, codigo, valor, pedido_referencia) VALUES (NULL, '$produto_id', '$produto_valor', '$id_pedido')";
+        $sql = "INSERT INTO produto_pedido(id_produto, codigo, descricao, valor, pedido_referencia) VALUES (NULL, '$produto_id', '$descricaoProduto', '$produto_valor', '$id_pedido')";
         $result = $conexao->query($sql);
         // echo "\n";echo $sql;
     }

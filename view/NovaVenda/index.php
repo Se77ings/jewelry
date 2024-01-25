@@ -14,6 +14,7 @@ if (!isset($_SESSION["login"])) {
     <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
     <title>Registrar Nova Venda</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -97,30 +98,40 @@ if (!isset($_SESSION["login"])) {
 
 <body>
     <main class="container container-fluid" style="margin:auto;">
-        <h3>Registrar Nova venda</h3>
+        <h3 style="margin-top:5px; margin-bottom:0px;">Registrar Nova venda</h3>
         <form action="../../controller/vendas/recebePedido.php" method="post" class="form form-flex " id="formulario">
-            <div class="row" style="display: flex;">
+            <div class="row" style="display: flex;margin: 15px 10px;">
                 <h5>Dados do Produto:</h5>
                 <hr>
-                <div class="col">
-                    <div class="form-flex">
-                        <label for="id_produto">Código:</label>
-                        <input class="form-control" style="width: 70px" type="number" name="id_produto" id="id_produto">
+                <div style="display:flex;justify-content:space-around">
+                    <div class="col-4">
+                        <div class="form-flex">
+                            <label for="id_produto">Código:</label>
+                            <input class="form-control" style="width: 90px" type="number" name="id_produto"
+                                id="id_produto">
+                        </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="form-flex">
-                        <label for="valor">Valor:</label>
-                        <div class="input-group form-flex" style="flex-direction:row" id="pai">
-                            <span class="input-group-text">R$</span>
-                            <input type="number" name="valor" id="valor" class="form-control">
+                    <div class="col-6">
+                        <div class="form-flex">
+                            <label for="valor">Valor:</label>
+                            <div class="input-group form-flex" style="flex-direction:row" id="pai">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" name="valor" id="valor" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col last-Son">
-                    <div class="form-flex">
-                        <label for="">&nbsp;</label>
-                        <h2 style="color:green;" class="bi bi-plus-circle-fill" onclick="adicionarProduto()"></h2>
+                <div style="display:flex;margin-top:12px;justify-content:space-around;">
+                    <div class="col-8">
+                        <div class="form-flex">
+                            <input type="text" placeholder="Descrição" class="form-control" id="descricao_produto"
+                                name="descricao_produto">
+                        </div>
+                    </div>
+                    <div class="col last-Son">
+                        <div class="form-flex">
+                            <h2 style="color:green;" class="bi bi-plus-circle-fill" onclick="adicionarProduto()"></h2>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -130,34 +141,38 @@ if (!isset($_SESSION["login"])) {
                 <div class="col">
                     <div class="form-flex">
                         <label for="nome" required>Nome:</label>
-                        <input class="form-control" type="text" name="nome" id="nome" autocomplete="off">
+                        <input class="form-control" type="text" name="nome" id="nome" autocomplete="off" required>
                         <div id="sugestoes" class="sugestoes" style="display:none"></div>
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-flex">
                         <label for="telefone">Telefone:</label>
-                        <input class="form-control" type="text" name="telefone" id="telefone">
+                        <input class="form-control" type="text" name="telefone" id="telefone"  required>
                     </div>
                 </div>
             </div>
 
-            <div class="row" style="display: flex; flex-direction: column;">
-                <h5>Condição de Pagamento:</h5>
+            <div class="row" style="display: flex; flex-direction: column; margin: 10px 10px;">
+                <div style="display: flex;">
+                    <h5 class="col-10">Condição de Pagamento:</h5>
+                    <h1 id="lock" onclick="showMessage()" class="bi bi-lock-fill"></h1>
+                    <h1 id="unlock" class="bi bi-unlock-fill" style="display:none;"></h1>
+                </div>
                 <hr>
-                <div class="form-flex mb-3 col" style="flex-direction: column;">
+                <div class="mb-3 col">
                     <div class="form-flex">
                         <label for="dataVenda" style="text-align:left;">Data da Venda:</label>
                         <input type="date" id="dataVenda"
                             style="width:282px; padding: 0.375rem 0.75rem; border-radius:8px; border: solid 1px gainsboro;"
-                            name="dataVenda">
+                            name="dataVenda" class="form-control" disabled required>
                     </div>
                 </div>
                 <div class="col">
                     <label for="condiçãoPagamento">&nbsp;</label>
                     <select name="condiçãoPagamento" id="condiçãoPagamento" class="form-select"
                         style="width: 280px; padding: 0.375rem 0.75rem; border-radius:8px; margin-left:0px;"
-                        onchange="calculaParcelas(this)">
+                        onchange="calculaParcelas(this)" disabled required>
                         <option value="" selected hidden>Escolha o tipo de pagamento:</option>
                         <option value="1">À Vista</option>
                         <option value="2">Próximo Mês</option>
@@ -212,6 +227,7 @@ if (!isset($_SESSION["login"])) {
                 produtosContainer.innerHTML += `
             <input type="hidden" name="produto_id[]" value="${produto.id}">
             <input type="hidden" name="produto_valor[]" value="${produto.valor}">
+            <input type="hidden" name="produto_descricao[]" value="${produto.descricao_produto}">
         `;
             });
 
@@ -219,10 +235,33 @@ if (!isset($_SESSION["login"])) {
             tabelaHTML += "<p style='text-align:center'> <b>Valor Total:</b> R$ " + Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0) + "</p>";
 
             valorFinal = Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0);
-            document.getElementById("valorFinal").value =valorFinal;
+            document.getElementById("valorFinal").value = valorFinal;
 
             produtos.innerHTML = tabelaHTML;
             numProdutosInput.value = Produtos.length;
+
+            var lock = document.getElementById("lock");
+            var unlock = document.getElementById("unlock");
+            var dataVenda = document.getElementById("dataVenda");
+            var condiçãoPagamento = document.getElementById("condiçãoPagamento");
+            var botaoFinal = document.getElementById("next");
+            var divValores = document.getElementById("valores");
+            if (Produtos.length == 0) {
+                condiçãoPagamento.options.selectedIndex = 0;
+                divValores.innerHTML = "";
+                produtos.style.display = "none";
+                lock.style.display = "block";
+                unlock.style.display = "none";
+                dataVenda.disabled = true;
+                condiçãoPagamento.disabled = true;
+                botaoFinal.disabled = true;
+            } else {
+                lock.style.display = "none";
+                unlock.style.display = "block";
+                dataVenda.disabled = false;
+                condiçãoPagamento.disabled = false;
+                botaoFinal.disabled = false;
+            }
 
         }
 
@@ -237,16 +276,29 @@ if (!isset($_SESSION["login"])) {
             return Produtos.some(produto => produto.id === id);
         }
 
+        function showMessage() {
+            Swal.fire({
+                title: 'Atenção!',
+                text: 'Você precisa adicionar pelo menos um produto para registrar a venda!',
+                icon: 'warning',
+                confirmButtonText: 'Ok'
+            })
+        }
+
         function adicionarProduto() {
             var idProduto = document.getElementById('id_produto');
             var valor = document.getElementById('valor');
+            var descricao_produto = document.getElementById('descricao_produto');
 
 
             if (idProduto.value == "" && valor.value == "") {
+                return;
                 // console.log("Vazio");
             } else if (idProduto.value == '' && valor.value != '') {
+                return;
                 // console.log("Valor preenchido, id vazio");
             } else if (idProduto.value != '' && valor.value == '') {
+                return;
                 // console.log("Id preenchido, valor vazio");
             } else {
                 // console.log("Ambos preenchidos");
@@ -255,10 +307,12 @@ if (!isset($_SESSION["login"])) {
                 if (!produtoJaInserido(idProduto.value)) {
                     var produto = {
                         id: idProduto.value,
-                        valor: valor.value
+                        valor: valor.value,
+                        descricao_produto: descricao_produto.value
                     };
                     idProduto.value = "";
                     valor.value = "";
+                    descricao_produto.value = "";
 
                     Produtos.push(produto);
                     // console.log("Produto inserido:", produto);
@@ -269,6 +323,7 @@ if (!isset($_SESSION["login"])) {
                 }
             }
             updateListaProdutos();
+
         }
 
         function removerProduto(id) {

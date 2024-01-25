@@ -79,7 +79,7 @@ if (!isset($_SESSION["login"])) {
                         $sql = "SELECT t.valor_pago, t.valor_venda, t.pedido_referencia, prs.nome as 'IDPessoa', t.data_vencimento as 'dataP', t.ID as 'IDTitulo'  FROM titulos t
                         LEFT JOIN pedidos p on t.pedido_referencia = p.ID
                         LEFT JOIN pessoas prs on p.id_cliente = prs.ID
-                        WHERE pago = 0
+                        WHERE pago = 0 AND t.cancelado is null
                         ORDER BY t.data_vencimento ASC";
 
                         $result = $conexao->query($sql);
@@ -89,14 +89,14 @@ if (!isset($_SESSION["login"])) {
                                 $valor_pago = $row['valor_pago'];
                                 $valor_venda = $row['valor_venda'];
 
-                                echo "<tr id='" . $row['IDTitulo'] . "' onclick='redirecionarParaDetalhes(" . $row["pedido_referencia"] . ")'>";
-                                echo "<td>";
+                                echo "<tr id='" . $row['IDTitulo'] . "'>";
+                                echo "<td onclick='redirecionarParaDetalhes(" . $row["pedido_referencia"] . ")'>";
                                 echo "<div class='card-body'>";
                                 echo "<p class='pDatas'>" . YYYYMMDDtoDDMMYYYY($row['dataP'], '/') . "</p>";
                                 echo "<p>" . $row['IDPessoa'] . "</p>";
                                 echo "</td>";
-                                echo "<td>" . convertePonto($row['valor_venda']) . "</td>";
-                                echo "<td>" . convertePonto($valor_venda - $valor_pago) . "</td>";
+                                echo "<td onclick='redirecionarParaDetalhes(" . $row["pedido_referencia"] . ")'>" . convertePonto($row['valor_venda']) . "</td>";
+                                echo "<td onclick='redirecionarParaDetalhes(" . $row["pedido_referencia"] . ")'>" . convertePonto($valor_venda - $valor_pago) . "</td>";
                                 echo "<td><button class='btn btn-success' onclick='quitacao(this.parentElement.parentElement)'>Quitar</button></td>";
                                 echo "</div>";
                                 echo "</tr>";
