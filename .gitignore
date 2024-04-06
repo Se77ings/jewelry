@@ -3,4 +3,6 @@ model/verificaLogin.php
 view/index.php
 index.html
 default.html
+user.ini
+view/Titulos/Direito/index.php
 view/assets/lib/css/styles.css
