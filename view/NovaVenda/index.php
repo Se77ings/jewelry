@@ -321,6 +321,11 @@ if (!isset($_SESSION["login"])) {
                         adicionarProduto();
                         updateListaProdutos();
                     }
+                    else if(result.dismiss === Swal.DismissReason.cancel){
+                        document.getElementById("id_produto").value = "";
+                        document.getElementById("valor").value = "";
+                        document.getElementById("descricao_produto").value = "";
+                    }
                 });
                 event.preventDefault();
             } else {

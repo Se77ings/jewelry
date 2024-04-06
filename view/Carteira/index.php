@@ -199,7 +199,6 @@ if (!isset($_SESSION["login"])) {
                         }
 
                         function mudaMes(mes, ano, op){
-                            console.log('ano recebido: '+ano);
                             if(op == 'back'){
                                 if(mes == 12){
                                     ano = ano - 1;
@@ -209,7 +208,6 @@ if (!isset($_SESSION["login"])) {
                                     ano = ano + 1;
                                 }
                             }
-                            console.log('ano enviado: '+ano);
 
                             window.location.href = 'index.php?mes='+mes+'&ano='+ano;
                         }
