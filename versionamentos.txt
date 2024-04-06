@@ -10,3 +10,11 @@ v1.02 - 25/01/2024:
 *Opção de Cancelar pedidos
 *Adicionei descrição do produto ao registrar venda
 *Adicionei restrições para registrar a venda, para evitar bugs na inserção
+
+<!-- -->
+
+v1.03 - 06/04/2024:
+*Adicionei uma verificação de produtos que podem ter sido esquecidos de adicionar ao pedido
+*Melhorei exibição de valores na parte de Registrar Nova Venda
+*Tentei remover o arquivo css do bootstrap do repositório, mas ocasionou muitos erros. Então deixei pra lá.
+*Alteração na Carteira, agora é possível visualizar por mês.

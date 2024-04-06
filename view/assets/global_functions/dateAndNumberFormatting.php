@@ -51,7 +51,6 @@ function DateToDDMMYYY($date) {
 
 // Função que formata números trocando ponto por vírgula e adicionando duas casas decimais
 function convertePonto($valor) {
-    $valorOriginal = $valor;
 
     if (!is_string($valor)) {
         $valor = strval($valor);

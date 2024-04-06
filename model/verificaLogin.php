@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include_once("conexao.php");
 // var_dump($_POST);
@@ -15,10 +16,11 @@ if (isset($_POST["username"])) {
         // var_dump($_SESSION);
         header("Location: ../view/index.php");
     } else {
-        header("Location: ../index.html?p=loginError");
+        header("Location: ../index.php?p=loginError");
     }
 
 } else if (isset($_SESSION["login"])) {
     header("Location: ../view/index.php");
 }
+
 ?>

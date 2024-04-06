@@ -129,7 +129,6 @@ if (!isset($_SESSION["login"])) {
                     }
                 }
 
-                // vou ter que fazer o seguinte: quando clicar em algum botão, redirecionar para a pagina denovo, com um get. if tenha get alterar a logica acima.. else manter a logica acima.
                 echo "<div class='LinhaMes'><button onclick='mudaMes(" . verificaProximoMes($mesAtual, 'back') . ", " . $anoAtual . ", \"back\")'><</button><p>" . $meses[$mesAtual - 1] . "</p><button onclick='mudaMes(" . verificaProximoMes($mesAtual, 'front') . ", " . $anoAtual . ", \"front\")'>></button></div>";
                 ?>
             </p>

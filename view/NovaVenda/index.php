@@ -10,9 +10,10 @@ if (!isset($_SESSION["login"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Nova Venda</title>
     <link rel="stylesheet" href="../assets/lib/css/styles.css">
     <link rel="stylesheet" href="../assets/lib/css/personalStyle.css">
-    <title>Registrar Nova Venda</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/jquery.inputmask.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -78,6 +79,14 @@ if (!isset($_SESSION["login"])) {
             text-align: center;
         }
 
+        .listProd {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+            margin-bottom: 0px;
+            margin: auto;
+        }
+
         @media screen and (max-width:500px) {
             #valor {
                 width: 80px;
@@ -114,10 +123,11 @@ if (!isset($_SESSION["login"])) {
                     <div class="col-6">
                         <div class="form-flex">
                             <label for="valor">Valor:</label>
-                            <div class="input-group form-flex" style="flex-direction:row" id="pai">
+                            <div class="input-group form-flex" style="flex-direction: row" id="pai">
                                 <span class="input-group-text">R$</span>
-                                <input type="number" name="valor" id="valor" class="form-control">
+                                <input type="text" id="valor" class="form-control" placeholder="0,00">
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -148,7 +158,7 @@ if (!isset($_SESSION["login"])) {
                 <div class="col">
                     <div class="form-flex">
                         <label for="telefone">Telefone:</label>
-                        <input class="form-control" type="text" name="telefone" id="telefone"  required>
+                        <input class="form-control" type="text" name="telefone" id="telefone" required>
                     </div>
                 </div>
             </div>
@@ -192,7 +202,7 @@ if (!isset($_SESSION["login"])) {
 
 
             <input type="text" name="entrada" value="" id="entrada" style="display:none;">
-            <input type="text" style='display:none' id='valorFinal'>
+            <input type="text" style='display:none' id='valorFinal' name="valorFinal">
             <div class="" style="text-align:center;">
                 <button id="next" type="submit" class="btn btn-success" disabled>Registrar Venda</button>
             </div>
@@ -200,9 +210,32 @@ if (!isset($_SESSION["login"])) {
     </form>
 
     </div>
-
+    <script src="../assets\global_functions\dateAndNumberFormattingJS.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        document.getElementById('valor').addEventListener('blur', function () {
+            var valor = convertePonto(this.value);
+            valorParsed = parseFloat(valor).toFixed(2);
+            this.value = valorParsed;
+            
+
+        });
+
+        
+        function exibeValor(valor) {
+
+            if(valor === null || valor === undefined || valor === '') {
+                return '';
+            }
+            if(typeof valor === 'string') {
+            valorFinal = valor.replace('.', ',');
+            return  valorFinal;
+            }else if(typeof valor === 'number') {
+                    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+
+}
+
         function updateListaProdutos() {
             var produtosContainer = document.getElementById("produtos_container");
             var numProdutosInput = document.getElementById("num_produtos");
@@ -217,7 +250,7 @@ if (!isset($_SESSION["login"])) {
                 tabelaHTML += `
             <tr>
                 <td>${produto.id}</td>
-                <td>R$ ${produto.valor}</td>
+                <td>R$ ${exibeValor(produto.valor)}</td>
                 <td>
                     <h2 style="color:red;" class="bi bi-x-circle-fill" onclick="removerProduto(${produto.id})"></h2>
                 </td>
@@ -232,7 +265,7 @@ if (!isset($_SESSION["login"])) {
             });
 
             tabelaHTML += "</table>";
-            tabelaHTML += "<p style='text-align:center'> <b>Valor Total:</b> R$ " + Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0) + "</p>";
+            tabelaHTML += "<p style='text-align:center'> <b>Valor Total:</b> R$ " + exibeValor(Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0)) + "</p>";
 
             valorFinal = Produtos.reduce((total, produto) => total + parseFloat(produto.valor), 0);
             document.getElementById("valorFinal").value = valorFinal;
@@ -267,8 +300,34 @@ if (!isset($_SESSION["login"])) {
 
         document.getElementById("formulario").addEventListener("submit", function (event) {
             // Chama a função para atualizar os campos ocultos com os dados da lista de produtos
-            updateListaProdutos();
+            var id_produto = document.getElementById("id_produto").value;
+            var valor = document.getElementById("valor").value;
+            var descricao_produto = document.getElementById("descricao_produto").value;
+
+            if (id_produto && valor && descricao_produto) {
+                Swal.fire({
+                    title: "Ops!",
+                    html: "<p>Parece que o seguinte produto não foi adicionado no pedido:</p>" +
+                        "<p class='listProd'><b>ID do Produto:</b> " + id_produto + "</p>" +
+                        "<p class='listProd'><b>Valor:</b> " + valor + "</p>" +
+                        "<p class='listProd'><b>Descrição:</b> " + descricao_produto + "</p>" +
+                        "<p>Deseja adicionar?</p>",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sim",
+                    cancelButtonText: "Não"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        adicionarProduto();
+                        updateListaProdutos();
+                    }
+                });
+                event.preventDefault();
+            } else {
+                updateListaProdutos();
+            }
         });
+
 
         var Produtos = [];
 

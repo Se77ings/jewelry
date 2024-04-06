@@ -134,7 +134,7 @@ if (!isset($_SESSION['login'])) {
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light sidebar-heading" style="height: 58px;">
                 <div class="container-fluid">
-                    <button class="btn btn-success" id="sidebarToggle">
+                    <button class="btn btn-success-pink" id="sidebarToggle">
                         << Menu</button>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -168,7 +168,7 @@ if (!isset($_SESSION['login'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/scripts.js"></script>
     <script>
-        exibeContent(document.getElementById("1"));
+        exibeContent(document.getElementById("3")); //voltar pra 1
         function exibeContent(opt) {
             gerenciaSelected();
             var frame = document.getElementById('frame');

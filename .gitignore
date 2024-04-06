@@ -3,3 +3,4 @@ model/verificaLogin.php
 view/index.php
 index.html
 default.html
+view/assets/lib/css/styles.css
